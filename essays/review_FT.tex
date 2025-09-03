@@ -1,0 +1,269 @@
+% Fourier_Transform_Review.tex
+% Comprehensive review of Fourier transforms, DFT, and practical spectrum plotting
+% Simulated student literature-review style
+
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{cite}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\title{A Comprehensive Review of the Fourier Transform, the DFT, and Practical Spectrum Plots}
+\author{Cristofer Antoni Souza Costa}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This document reviews the mathematical foundations and practical aspects of the Fourier transform (continuous and discrete), derives the transform of a cosine signal step-by-step, explains the distributional nature of the transform of infinite-duration sinusoids, and shows how finite-duration sampling leads to sinc-shaped spectra and discrete Fourier coefficients. Practical recommendations for computing and plotting spectra (FFT usage, scaling, windowing, and leakage) are provided together with hand-solvable examples and a short appendix with Python code to reproduce the plots.
+\end{abstract}
+
+\tableofcontents
+\vspace{1em}
+
+\section{Introduction}
+The Fourier transform is a cornerstone of signal analysis: it converts signals from the time (or spatial) domain into the frequency domain, revealing the signal's spectral content. There are multiple related transforms: the continuous-time Fourier transform (CTFT), the discrete-time Fourier transform (DTFT), and the discrete Fourier transform (DFT). In practice, we compute DFTs with the fast Fourier transform (FFT) algorithm on sampled finite-duration signals.
+
+This review covers the theoretical derivation for simple signals (notably cosines), justification for distributional results (Dirac delta), and practical considerations that convert idealized spectral lines into computable quantities that we can plot.
+
+\section{Conventions and notation}
+We use the angular-frequency convention for the continuous transform:
+\begin{align}
+\mathcal{F}\{x(t)\}(\omega) &= X(\omega)=\int_{-\infty}^{\infty} x(t)\,e^{-i\omega t}\,dt,\\
+\mathcal{F}^{-1}\{X(\omega)\}(t) &= x(t)=\frac{1}{2\pi}\int_{-\infty}^{\infty} X(\omega)\,e^{i\omega t}\,d\omega.
+\end{align}
+For frequency in hertz we use $f=\omega/(2\pi)$ and write corresponding forms where convenient. For discrete sequences $x[n]$, $n\in\{0,\dots,N-1\}$ we use the DFT:
+\begin{equation}
+X[k]=\sum_{n=0}^{N-1} x[n] e^{-i2\pi k n /N},\qquad k=0,\dots,N-1.
+\end{equation}
+
+\section{Continuous-time Fourier transform of a cosine (step-by-step)}
+We compute the CTFT of $x(t)=A\cos(\omega_0 t)$.
+
+\subsection{Step 1: Euler decomposition}
+Using Euler's formula,
+\begin{equation}
+\cos(\omega_0 t)=\frac{1}{2}\big(e^{i\omega_0 t}+e^{-i\omega_0 t}\big).
+\end{equation}
+Thus
+\begin{equation}
+x(t)=A\cos(\omega_0 t)=\frac{A}{2}e^{i\omega_0 t}+\frac{A}{2}e^{-i\omega_0 t}.
+\end{equation}
+
+\subsection{Step 2: linearity and substitution}
+Using linearity of the Fourier transform,
+\begin{align}
+X(\omega)&=\int_{-\infty}^{\infty} x(t)e^{-i\omega t}\,dt \\
+&=\frac{A}{2}\int_{-\infty}^{\infty} e^{-i(\omega-\omega_0)t}\,dt + \frac{A}{2}\int_{-\infty}^{\infty} e^{-i(\omega+\omega_0)t}\,dt.
+\end{align}
+Thus the problem reduces to evaluating the improper integrals of complex exponentials over $(-\infty,\infty)$.
+
+\subsection{Step 3: integral of a complex exponential as a distribution}
+The integral
+\begin{equation}
+I(\alpha)=\int_{-\infty}^{\infty} e^{-i\alpha t}\,dt
+\end{equation}
+is not absolutely convergent in the classical sense. To give it meaning we use the language of distributions (generalized functions). Two standard regularization arguments show that
+\begin{equation}
+I(\alpha)=2\pi\,\delta(\alpha),
+\end{equation}
+where $\delta(\cdot)$ is the Dirac delta. The two equivalent derivations are:
+
+\subsubsection{(A) Truncation (rectangular window) and limit}
+Compute the finite integral over $[-T/2, T/2]$:
+\begin{equation}
+I_T(\alpha)=\int_{-T/2}^{T/2} e^{-i\alpha t} \,dt = \frac{2\sin(\alpha T/2)}{\alpha}.
+\end{equation}
+As $T\to\infty$, $I_T(\alpha)$ behaves like $2\pi\,\delta(\alpha)$ in the distributional sense because the sinc kernel concentrates mass at $\alpha=0$ while its integral stays $2\pi$.
+
+\subsubsection{(B) Exponential damping (Abel summation)}
+Consider a damping factor $e^{-\epsilon |t|}$ ($\epsilon>0$) and compute
+\begin{equation}
+\int_{-\infty}^{\infty} e^{-\epsilon|t|} e^{-i\alpha t}\,dt=\frac{2\epsilon}{\epsilon^2+\alpha^2}.
+\end{equation}
+As $\epsilon\to0^+$ the Lorentzian kernel on the right tends to $2\pi\,\delta(\alpha)$.
+
+Both approaches justify the distributional identity used in Fourier analysis.
+
+\subsection{Step 4: apply to the cosine}
+Apply the identity with $\alpha=\omega-\omega_0$ and $\alpha=\omega+\omega_0$:
+\begin{align}
+X(\omega)&=\frac{A}{2}\cdot 2\pi\,\delta(\omega-\omega_0) + \frac{A}{2}\cdot 2\pi\,\delta(\omega+\omega_0)\\
+&=A\pi\big[\delta(\omega-\omega_0)+\delta(\omega+\omega_0)\big].
+\end{align}
+
+This is the classic result: an infinite-duration cosine yields two spectral impulses at $\pm\omega_0$ with weights $A\pi$.
+
+\subsection{Inverse transform consistency check}
+Using the inverse transform
+\begin{equation}
+x(t)=\frac{1}{2\pi}\int_{-\infty}^{\infty} X(\omega) e^{i\omega t}\,d\omega,
+\end{equation}
+substituting the expression for $X(\omega)$ recovers $x(t)=A\cos(\omega_0 t)$.
+
+\section{Finite-duration signals and the appearance of sinc lobes}
+In practice signals are time-limited or windowed. Let $w_T(t)$ be a rectangular window of duration $T$ (centered or causal). The transform of the truncated cosine is the convolution of the delta-lines with the transform of the window. For a rectangular window,
+\begin{equation}
+\mathcal{F}\{w_T(t)\}(\omega) = T\operatorname{sinc}\left(\frac{\omega T}{2}\right)\equiv T\frac{\sin(\omega T/2)}{\omega T/2}.
+\end{equation}
+Hence each delta at $\pm\omega_0$ becomes a sinc-shaped lobe centered at $\pm\omega_0$. The main lobe width is proportional to $1/T$ and side-lobes cause spectral leakage: energy spreads into nearby frequencies.
+
+\section{Sampling, the DTFT, and the DFT}
+\subsection{Sampling and aliasing}
+Sampling a continuous signal at frequency $f_s$ (period $T_s=1/f_s$) produces a discrete-time sequence which, in the frequency domain, causes the continuous spectrum to become periodic with period $2\pi/T_s$ in angular frequency (or $f_s$ in Hz). If the original signal contains frequencies above $f_s/2$ (the Nyquist frequency), they fold (alias) into the baseband. Therefore choose $f_s$ such that $f_{\max}<f_s/2$ or apply an anti-aliasing low-pass filter before sampling.
+
+\subsection{The DTFT and the DFT}
+The discrete-time Fourier transform (DTFT) of a sequence $x[n]$ is continuous in frequency and periodic with period $2\pi$:
+\begin{equation}
+X_{\mathrm{DTFT}}(e^{i\omega})=\sum_{n=-\infty}^{\infty} x[n] e^{-i\omega n}.
+\end{equation}
+In practice we have finite-length sequences and compute the $N$-point DFT:
+\begin{equation}
+X[k]=\sum_{n=0}^{N-1} x[n] e^{-i2\pi kn/N},\qquad k=0,\dots,N-1.
+\end{equation}
+This provides samples of the DTFT at $\omega_k=2\pi k/N$ (or frequency $f_k=k f_s/N$).
+
+\section{DFT of a sampled cosine: derivation and hand examples}
+Consider the sampled cosine aligned with a DFT bin:
+\begin{equation}
+x[n]=A\cos\left(\frac{2\pi k_0}{N}n\right)=\frac{A}{2}e^{i2\pi k_0 n/N}+\frac{A}{2}e^{-i2\pi k_0 n/N}.
+\end{equation}
+The DFT is
+\begin{align}
+X[k] &= \sum_{n=0}^{N-1} x[n] e^{-i2\pi k n/N} \\
+&=\frac{A}{2}\sum_{n=0}^{N-1} e^{i2\pi (k_0-k)n/N} + \frac{A}{2}\sum_{n=0}^{N-1} e^{-i2\pi (k_0+k)n/N}.
+\end{align}
+Using the geometric-series identity, the sums are zero unless their complex exponential term equals 1 for every $n$, i.e. when the exponent factor is integer multiple of $2\pi$. Therefore
+\begin{equation}
+X[k_0]=\frac{AN}{2},\qquad X[N-k_0]=\frac{AN}{2},\qquad X[\text{else}]=0.
+\end{equation}
+This discrete result is the DFT analogue of the two deltas in the CTFT.
+
+\subsection{Hand-solvable examples}
+\paragraph{Example A: $N=2$, $x=\{1,-1\}$.}
+Compute $X[0]$ and $X[1]$ by direct summation (details omitted here are easily done by hand): result $X=\{0,2\}$.
+
+\paragraph{Example B: $N=4$, $A=2$, $k_0=1$.}
+$x[n]=2\cos(2\pi n/4)=\{2,0,-2,0\}$. Summing yields $X=\{0,4,0,4\}$ (see section derivations in body text for arithmetic steps).
+
+These coincide with the formula $X[k_0]=AN/2$.
+
+\section{Practical plotting: normalization and conventions}
+When plotting spectrum magnitude from an FFT, be aware of conventions:
+\begin{itemize}
+\item Many FFT libraries return unnormalized DFT values. A common normalization to get amplitudes in the same units as time-domain amplitude is dividing by $N$ (the number of samples).
+\item For real signals the spectrum is conjugate-symmetric. Plotting only positive frequencies (single-sided spectrum) requires doubling non-DC/non-Nyquist bins to preserve energy: $|X_{\text{single}}[k]| = 2|X[k]|/N$ for $k=1..N/2-1$.
+\item Phase spectrum is given by $\angle X[k]=\mathrm{atan2}(\Im\{X[k]\},\Re\{X[k]\})$; be mindful of noisy bins where phase is ill-defined.
+\end{itemize}
+
+\section{Windowing and spectral leakage}
+Finite-length sampling is equivalent to multiplying the infinite-duration signal by a window $w[n]$. In the frequency domain this multiplies the spectrum by the DTFT of the window (convolution in frequency), producing sidelobes and leakage. Common windows (Hann, Hamming, Blackman, etc.) trade main-lobe width for sidelobe level. Choose based on whether frequency resolution (narrow main lobe) or dynamic range (low sidelobes) is more important.
+
+\section{Recovering amplitude and phase from the DFT}
+For a cosine of amplitude $A$ whose frequency falls exactly on a DFT bin $k_0$, the single-sided amplitude at $f_{k_0}$ is $A$ when using the single-sided scaling described above. If using two-sided magnitude normalized by $N$, the bins at $k_0$ and $N-k_0$ each have magnitude $AN/2$, so $A=(2/N)|X[k_0]|$. Phase can be recovered from the complex argument; a pure cosine without phase has equal-phase contributions at $\pm k_0$ that combine consistently.
+
+\section{Recommended literature (sampled)}
+This section lists a few accessible and commonly cited texts and papers for further reading.
+\begin{itemize}
+\item A. V. Oppenheim and R. W. Schafer, \textit{Discrete-Time Signal Processing}, 3rd ed., Prentice Hall, 2009. (Foundational DSP text.)
+\item R. N. Bracewell, \textit{The Fourier Transform and Its Applications}, 3rd ed., McGraw-Hill, 2000. (Excellent continuous FT development.)
+\item S. W. Smith, \textit{The Scientist and Engineer's Guide to Digital Signal Processing}, California Technical Publishing, 1997. (Practical and approachable.)
+\item P. D. Welch, "The use of fast Fourier transform for the estimation of power spectra: A method based on time averaging over short, modified periodograms," \textit{IEEE Transactions on Audio and Electroacoustics}, 1967. (Welch method for PSD estimation.)
+\item S. W. Smith, "Spectral leakage and windowing" (online chapters in the DSP guide) and standard references on window design.
+\end{itemize}
+
+\section{Conclusion and practical checklist}
+\begin{enumerate}
+\item When you have a pure infinite cosine, expect two delta-lines at $\pm\omega_0$. For plotting, use sampled data and an FFT — you will see spikes or sinc-lobes depending on exact alignment and windowing.
+\item To get accurate amplitude estimates: use appropriate normalization (divide by $N$) and single-sided doubling when plotting positive frequencies only.
+\item Avoid leakage by choosing $N$ so that the signal period fits an integer number of cycles inside the record or by applying suitable windows and understanding the tradeoffs.
+\item Always ensure sampling obeys Nyquist and apply an anti-alias filter if necessary.
+\end{enumerate}
+
+\appendix
+\section{Python code to reproduce key plots}
+The following code reproduces finite-length cosine time-domain and magnitude-spectrum plots using NumPy and Matplotlib. To reproduce, save as a \texttt{.py} file and run in an environment with these libraries installed.
+
+\begin{lstlisting}[language=Python,caption={Simple FFT plotting example}]
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Signal parameters
+A = 2.0
+f0 = 50.0
+fs = 1000.0
+T = 1.0
+N = int(fs * T)
+
+# Generate time domain signal
+t = np.linspace(0, T, N, endpoint=False)
+x = A * np.cos(2*np.pi*f0*t)
+
+# Compute FFT
+X = np.fft.fft(x)
+freqs = np.fft.fftfreq(N, 1/fs)
+
+# Single-sided magnitude (positive freqs)
+mask = freqs >= 0
+freqs_pos = freqs[mask]
+X_mag = np.abs(X)/N
+X_mag_single = X_mag.copy()
+X_mag_single[1:N//2] *= 2
+
+# Plotting
+plt.figure(figsize=(10,6))
+plt.subplot(2,1,1)
+plt.plot(t, x)
+plt.title('Time domain: cosine')
+plt.xlabel('Time (s)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+
+plt.subplot(2,1,2)
+plt.stem(freqs_pos, X_mag_single[mask], basefmt=' ', use_line_collection=True)
+plt.xlim(0,200)
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Amplitude')
+plt.title('Single-sided magnitude spectrum')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\section{Additional examples and exercises}
+\subsection{Exercise 1: DFT of a rectangular pulse}
+Consider a rectangular pulse $x[n] = 1$ for $n = 0, 1, \ldots, M-1$ and $x[n] = 0$ otherwise, where $M < N$. Show that the DFT is given by:
+\begin{equation}
+X[k] = \frac{1 - e^{-i2\pi k M/N}}{1 - e^{-i2\pi k/N}}
+\end{equation}
+
+\subsection{Exercise 2: Effect of zero-padding}
+Demonstrate how zero-padding affects the frequency resolution of the DFT. Show that adding zeros increases the number of frequency bins but does not improve the actual frequency resolution.
+
+\section{Acknowledgements}
+This short review was assembled as a student-style literature review and primer, synthesizing classical results from the references listed above.
+
+\begin{thebibliography}{9}
+\bibitem{oppenheim2009}
+A. V. Oppenheim and R. W. Schafer, \textit{Discrete-Time Signal Processing}, 3rd ed., Prentice Hall, 2009.
+
+\bibitem{bracewell2000}
+R. N. Bracewell, \textit{The Fourier Transform and Its Applications}, 3rd ed., McGraw-Hill, 2000.
+
+\bibitem{smith1997}
+S. W. Smith, \textit{The Scientist and Engineer's Guide to Digital Signal Processing}, California Technical Publishing, 1997.
+
+\bibitem{welch1967}
+P. D. Welch, "The use of fast Fourier transform for the estimation of power spectra: A method based on time averaging over short, modified periodograms," \textit{IEEE Trans. Audio Electroacoust.}, vol. AU-15, no. 2, pp. 70--73, 1967.
+
+\end{thebibliography}
+
+\end{document}
