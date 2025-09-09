@@ -1,0 +1,518 @@
+% =============================================================================
+% APPENDIX B: CODE IMPLEMENTATION
+% =============================================================================
+
+\chapter{Code Implementation}
+
+\section{Core Classes and Methods}
+
+\subsection{SpectralAnalyzer Class}
+
+\begin{lstlisting}[language=Python, caption=Core SpectralAnalyzer class implementation]
+import numpy as np
+import scipy.signal as signal
+from scipy.fft import fft, fftfreq
+import matplotlib.pyplot as plt
+
+class SpectralAnalyzer:
+    """
+    Core class for spectral analysis including FFT, PSD, and basic HOS analysis.
+    """
+    
+    def __init__(self, fs=1000.0, nfft=1024, window='hann'):
+        """
+        Initialize the spectral analyzer.
+        
+        Parameters:
+        -----------
+        fs : float
+            Sampling frequency in Hz
+        nfft : int
+            Number of FFT points
+        window : str
+            Window function to use
+        """
+        self.fs = fs
+        self.nfft = nfft
+        self.window = window
+        self.freqs = fftfreq(nfft, 1/fs)[:nfft//2]
+        
+    def compute_fft(self, signal, window=None):
+        """
+        Compute the FFT of a signal.
+        
+        Parameters:
+        -----------
+        signal : array_like
+            Input signal
+        window : str, optional
+            Window function to apply
+            
+        Returns:
+        --------
+        freqs : ndarray
+            Frequency array
+        fft_result : ndarray
+            FFT result
+        """
+        if window is None:
+            window = self.window
+            
+        # Apply window
+        if window != 'rectangular':
+            window_func = getattr(signal, window)
+            windowed_signal = signal * window_func(len(signal))
+        else:
+            windowed_signal = signal
+            
+        # Compute FFT
+        fft_result = fft(windowed_signal, n=self.nfft)
+        
+        return self.freqs, fft_result[:self.nfft//2]
+    
+    def compute_psd(self, signal, window=None, overlap=0.5):
+        """
+        Compute Power Spectral Density using Welch's method.
+        
+        Parameters:
+        -----------
+        signal : array_like
+            Input signal
+        window : str, optional
+            Window function to use
+        overlap : float, optional
+            Overlap ratio between segments
+            
+        Returns:
+        --------
+        freqs : ndarray
+            Frequency array
+        psd : ndarray
+            Power spectral density
+        """
+        if window is None:
+            window = self.window
+            
+        # Use scipy's welch method
+        freqs, psd = signal.welch(
+            signal, 
+            fs=self.fs, 
+            window=window, 
+            nperseg=self.nfft//2,
+            noverlap=int(self.nfft//2 * overlap),
+            nfft=self.nfft
+        )
+        
+        return freqs, psd
+\end{lstlisting}
+
+\subsection{HOSAnalyzer Class}
+
+\begin{lstlisting}[language=Python, caption=HOSAnalyzer class for higher-order spectral analysis]
+class HOSAnalyzer:
+    """
+    Class for Higher-Order Spectral analysis including bispectrum and trispectrum.
+    """
+    
+    def __init__(self, fs=1000.0, nfft=256):
+        """
+        Initialize the HOS analyzer.
+        
+        Parameters:
+        -----------
+        fs : float
+            Sampling frequency
+        nfft : int
+            Number of FFT points (reduced for computational efficiency)
+        """
+        self.fs = fs
+        self.nfft = nfft
+        self.freqs = fftfreq(nfft, 1/fs)[:nfft//2]
+        
+    def compute_bispectrum(self, signal, window='hann', overlap=0.5):
+        """
+        Compute the bispectrum using the direct method.
+        
+        Parameters:
+        -----------
+        signal : array_like
+            Input signal
+        window : str, optional
+            Window function
+        overlap : float, optional
+            Overlap ratio
+            
+        Returns:
+        --------
+        bispectrum : ndarray
+            Computed bispectrum
+        freqs : tuple
+            Frequency arrays
+        """
+        # Segment the signal
+        segments = self._segment_signal(signal, window, overlap)
+        
+        # Initialize bispectrum
+        bispectrum = np.zeros((self.nfft//2, self.nfft//2), dtype=complex)
+        
+        # Compute bispectrum for each segment
+        for segment in segments:
+            # Compute FFT
+            fft_segment = fft(segment, n=self.nfft)
+            
+            # Compute bispectrum using direct method
+            for i in range(self.nfft//2):
+                for j in range(self.nfft//2):
+                    if i + j < self.nfft//2:
+                        bispectrum[i, j] += (fft_segment[i] * 
+                                           fft_segment[j] * 
+                                           np.conj(fft_segment[i + j]))
+        
+        # Average over segments
+        bispectrum /= len(segments)
+        
+        return bispectrum, (self.freqs, self.freqs)
+    
+    def compute_trispectrum(self, signal, window='hann', overlap=0.5):
+        """
+        Compute the trispectrum using the direct method.
+        
+        Parameters:
+        -----------
+        signal : array_like
+            Input signal
+        window : str, optional
+            Window function
+        overlap : float, optional
+            Overlap ratio
+            
+        Returns:
+        --------
+        trispectrum : ndarray
+            Computed trispectrum
+        freqs : tuple
+            Frequency arrays
+        """
+        # Segment the signal
+        segments = self._segment_signal(signal, window, overlap)
+        
+        # Initialize trispectrum (reduced size for computational efficiency)
+        n_reduced = self.nfft//4
+        trispectrum = np.zeros((n_reduced, n_reduced, n_reduced), dtype=complex)
+        
+        # Compute trispectrum for each segment
+        for segment in segments:
+            # Compute FFT
+            fft_segment = fft(segment, n=self.nfft)
+            
+            # Compute trispectrum using direct method
+            for i in range(n_reduced):
+                for j in range(n_reduced):
+                    for k in range(n_reduced):
+                        if i + j + k < self.nfft//2:
+                            trispectrum[i, j, k] += (fft_segment[i] * 
+                                                    fft_segment[j] * 
+                                                    fft_segment[k] * 
+                                                    np.conj(fft_segment[i + j + k]))
+        
+        # Average over segments
+        trispectrum /= len(segments)
+        
+        return trispectrum, (self.freqs[:n_reduced], 
+                           self.freqs[:n_reduced], 
+                           self.freqs[:n_reduced])
+    
+    def _segment_signal(self, signal, window, overlap):
+        """
+        Segment signal into overlapping windows.
+        
+        Parameters:
+        -----------
+        signal : array_like
+            Input signal
+        window : str
+            Window function
+        overlap : float
+            Overlap ratio
+            
+        Returns:
+        --------
+        segments : list
+            List of signal segments
+        """
+        segment_length = self.nfft
+        step_size = int(segment_length * (1 - overlap))
+        
+        segments = []
+        for i in range(0, len(signal) - segment_length + 1, step_size):
+            segment = signal[i:i + segment_length]
+            
+            # Apply window
+            if window != 'rectangular':
+                window_func = getattr(signal, window)
+                segment = segment * window_func(len(segment))
+            
+            segments.append(segment)
+        
+        return segments
+\end{lstlisting}
+
+\subsection{FeatureExtractor Class}
+
+\begin{lstlisting}[language=Python, caption=FeatureExtractor class for comprehensive feature extraction]
+class FeatureExtractor:
+    """
+    Class for extracting features from signals and spectra.
+    """
+    
+    def __init__(self, spectral_analyzer, hos_analyzer):
+        """
+        Initialize the feature extractor.
+        
+        Parameters:
+        -----------
+        spectral_analyzer : SpectralAnalyzer
+            Spectral analyzer instance
+        hos_analyzer : HOSAnalyzer
+            HOS analyzer instance
+        """
+        self.spectral_analyzer = spectral_analyzer
+        self.hos_analyzer = hos_analyzer
+        
+    def extract_time_domain_features(self, signal):
+        """
+        Extract time-domain features from signal.
+        
+        Parameters:
+        -----------
+        signal : array_like
+            Input signal
+            
+        Returns:
+        --------
+        features : dict
+            Dictionary of time-domain features
+        """
+        features = {}
+        
+        # Basic statistical features
+        features['rms'] = np.sqrt(np.mean(signal**2))
+        features['peak'] = np.max(np.abs(signal))
+        features['crest_factor'] = features['peak'] / features['rms']
+        
+        # Higher-order statistics
+        features['kurtosis'] = self._compute_kurtosis(signal)
+        features['skewness'] = self._compute_skewness(signal)
+        
+        # Additional features
+        features['variance'] = np.var(signal)
+        features['mean'] = np.mean(signal)
+        features['std'] = np.std(signal)
+        
+        return features
+    
+    def extract_frequency_domain_features(self, psd):
+        """
+        Extract frequency-domain features from PSD.
+        
+        Parameters:
+        -----------
+        psd : array_like
+            Power spectral density
+            
+        Returns:
+        --------
+        features : dict
+            Dictionary of frequency-domain features
+        """
+        features = {}
+        
+        # Spectral centroid
+        freqs = self.spectral_analyzer.freqs
+        features['spectral_centroid'] = np.sum(freqs * psd) / np.sum(psd)
+        
+        # Spectral rolloff
+        cumsum_psd = np.cumsum(psd)
+        total_power = cumsum_psd[-1]
+        rolloff_idx = np.where(cumsum_psd >= 0.85 * total_power)[0]
+        if len(rolloff_idx) > 0:
+            features['spectral_rolloff'] = freqs[rolloff_idx[0]]
+        else:
+            features['spectral_rolloff'] = freqs[-1]
+        
+        # Spectral bandwidth
+        features['spectral_bandwidth'] = np.sqrt(
+            np.sum((freqs - features['spectral_centroid'])**2 * psd) / np.sum(psd)
+        )
+        
+        return features
+    
+    def extract_bispectrum_features(self, bispectrum):
+        """
+        Extract features from bispectrum.
+        
+        Parameters:
+        -----------
+        bispectrum : ndarray
+            Bispectrum array
+            
+        Returns:
+        --------
+        features : dict
+            Dictionary of bispectrum features
+        """
+        features = {}
+        
+        # Mean magnitude
+        features['bispectrum_mean_magnitude'] = np.mean(np.abs(bispectrum))
+        
+        # Sum of logarithmic amplitudes
+        epsilon = 1e-10  # Small constant to avoid log(0)
+        features['bispectrum_sla'] = np.sum(np.log(np.abs(bispectrum) + epsilon))
+        
+        # Sum of logarithmic amplitudes of diagonal elements
+        diagonal = np.diag(bispectrum)
+        features['bispectrum_slade'] = np.sum(np.log(np.abs(diagonal) + epsilon))
+        
+        # Spectral moments
+        freqs = self.hos_analyzer.freqs
+        magnitude = np.abs(bispectrum)
+        
+        # First-order spectral moment
+        features['bispectrum_fosm'] = np.sum(freqs[:, np.newaxis] * magnitude) / np.sum(magnitude)
+        
+        # Second-order spectral moment
+        features['bispectrum_sosm'] = np.sum(freqs[:, np.newaxis]**2 * magnitude) / np.sum(magnitude)
+        
+        return features
+    
+    def extract_trispectrum_features(self, trispectrum):
+        """
+        Extract features from trispectrum.
+        
+        Parameters:
+        -----------
+        trispectrum : ndarray
+            Trispectrum array
+            
+        Returns:
+        --------
+        features : dict
+            Dictionary of trispectrum features
+        """
+        features = {}
+        
+        # Mean magnitude
+        features['trispectrum_mean_magnitude'] = np.mean(np.abs(trispectrum))
+        
+        # Sum of logarithmic amplitudes
+        epsilon = 1e-10
+        features['trispectrum_sla'] = np.sum(np.log(np.abs(trispectrum) + epsilon))
+        
+        return features
+    
+    def extract_all_features(self, signal):
+        """
+        Extract all features from a signal.
+        
+        Parameters:
+        -----------
+        signal : array_like
+            Input signal
+            
+        Returns:
+        --------
+        features : dict
+            Dictionary containing all features
+        """
+        features = {}
+        
+        # Time-domain features
+        features.update(self.extract_time_domain_features(signal))
+        
+        # Frequency-domain features
+        _, psd = self.spectral_analyzer.compute_psd(signal)
+        features.update(self.extract_frequency_domain_features(psd))
+        
+        # HOS features
+        bispectrum, _ = self.hos_analyzer.compute_bispectrum(signal)
+        features.update(self.extract_bispectrum_features(bispectrum))
+        
+        trispectrum, _ = self.hos_analyzer.compute_trispectrum(signal)
+        features.update(self.extract_trispectrum_features(trispectrum))
+        
+        return features
+    
+    def _compute_kurtosis(self, signal):
+        """Compute kurtosis of signal."""
+        mean = np.mean(signal)
+        std = np.std(signal)
+        if std == 0:
+            return 0
+        return np.mean(((signal - mean) / std) ** 4)
+    
+    def _compute_skewness(self, signal):
+        """Compute skewness of signal."""
+        mean = np.mean(signal)
+        std = np.std(signal)
+        if std == 0:
+            return 0
+        return np.mean(((signal - mean) / std) ** 3)
+\end{lstlisting}
+
+\section{Usage Examples}
+
+\subsection{Basic Analysis Example}
+
+\begin{lstlisting}[language=Python, caption=Basic usage example]
+# Initialize analyzers
+spectral_analyzer = SpectralAnalyzer(fs=1000.0, nfft=1024)
+hos_analyzer = HOSAnalyzer(fs=1000.0, nfft=256)
+feature_extractor = FeatureExtractor(spectral_analyzer, hos_analyzer)
+
+# Load or generate signal
+signal = generate_test_signal()  # Your signal generation function
+
+# Extract features
+features = feature_extractor.extract_all_features(signal)
+
+# Print feature names and values
+for name, value in features.items():
+    print(f"{name}: {value:.4f}")
+\end{lstlisting}
+
+\subsection{Batch Processing Example}
+
+\begin{lstlisting}[language=Python, caption=Batch processing example]
+def process_dataset(signals, labels):
+    """
+    Process a dataset of signals and extract features.
+    
+    Parameters:
+    -----------
+    signals : list
+        List of signals
+    labels : list
+        List of corresponding labels
+        
+    Returns:
+    --------
+    feature_matrix : ndarray
+        Feature matrix
+    """
+    # Initialize analyzers
+    spectral_analyzer = SpectralAnalyzer(fs=1000.0, nfft=1024)
+    hos_analyzer = HOSAnalyzer(fs=1000.0, nfft=256)
+    feature_extractor = FeatureExtractor(spectral_analyzer, hos_analyzer)
+    
+    # Extract features for all signals
+    all_features = []
+    for signal in signals:
+        features = feature_extractor.extract_all_features(signal)
+        all_features.append(list(features.values()))
+    
+    # Convert to numpy array
+    feature_matrix = np.array(all_features)
+    
+    return feature_matrix, list(features.keys())
+\end{lstlisting}

@@ -1,0 +1,231 @@
+% =============================================================================
+% CHAPTER 3: THEORETICAL BACKGROUND
+% =============================================================================
+
+\chapter{Theoretical Background}
+
+\section{Introduction}
+
+This chapter establishes the mathematical foundations necessary for understanding and implementing higher-order spectral analysis in the context of rotordynamics fault detection. The theoretical framework covers signal processing fundamentals, higher-order statistics, spectral analysis techniques, and their specific applications to vibration signals from rotating machinery.
+
+\section{Signal Processing Fundamentals}
+
+\subsection{Continuous-Time Signals}
+
+A continuous-time signal $x(t)$ is a function of a continuous variable $t$ representing time. For vibration analysis, we typically deal with real-valued signals representing displacement, velocity, or acceleration measurements.
+
+\subsubsection{Signal Properties}
+
+Important properties of signals include:
+
+\begin{itemize}
+    \item \textbf{Energy}: $E_x = \int_{-\infty}^{\infty} |x(t)|^2 dt$
+    \item \textbf{Power}: $P_x = \lim_{T \to \infty} \frac{1}{2T} \int_{-T}^{T} |x(t)|^2 dt$
+    \item \textbf{Autocorrelation}: $R_x(\tau) = \lim_{T \to \infty} \frac{1}{2T} \int_{-T}^{T} x(t)x(t+\tau) dt$
+\end{itemize}
+
+\subsection{Discrete-Time Signals}
+
+In practice, continuous signals are sampled at discrete time intervals, resulting in discrete-time signals $x[n] = x(nT_s)$, where $T_s$ is the sampling period and $f_s = 1/T_s$ is the sampling frequency.
+
+\subsubsection{Sampling Theorem}
+
+The Nyquist-Shannon sampling theorem states that a signal can be perfectly reconstructed from its samples if the sampling frequency is at least twice the highest frequency component in the signal:
+
+\begin{equation}
+f_s \geq 2f_{max}
+\end{equation}
+
+\section{Higher-Order Statistics}
+
+\subsection{Moments and Cumulants}
+
+For a random process $x(t)$, the $k$-th order moment is defined as:
+
+\begin{equation}
+m_{k,x}(\tau_1, \tau_2, \ldots, \tau_{k-1}) = E[x(t)x(t+\tau_1) \cdots x(t+\tau_{k-1})]
+\end{equation}
+
+The $k$-th order cumulant is related to moments through the relationship:
+
+\begin{align}
+C_{1,x} &= m_{1,x} \\
+C_{2,x}(\tau) &= m_{2,x}(\tau) - m_{1,x}^2 \\
+C_{3,x}(\tau_1, \tau_2) &= m_{3,x}(\tau_1, \tau_2) - m_{1,x}[m_{2,x}(\tau_1) + m_{2,x}(\tau_2) + m_{2,x}(\tau_2-\tau_1)] + 2m_{1,x}^3
+\end{align}
+
+\subsection{Properties of Cumulants}
+
+Cumulants possess several important properties:
+
+\begin{enumerate}
+    \item \textbf{Additivity}: For independent processes, cumulants are additive
+    \item \textbf{Homogeneity}: $C_{k,ax}(\tau_1, \ldots, \tau_{k-1}) = a^k C_{k,x}(\tau_1, \ldots, \tau_{k-1})$
+    \item \textbf{Symmetry}: Cumulants are symmetric functions of their arguments
+    \item \textbf{Gaussian Suppression}: For Gaussian processes, cumulants of order $k > 2$ are zero
+\end{enumerate}
+
+\section{Higher-Order Spectral Analysis}
+
+\subsection{Bispectrum}
+
+The bispectrum is the two-dimensional Fourier transform of the third-order cumulant:
+
+\begin{equation}
+B_x(\omega_1, \omega_2) = \sum_{\tau_1=-\infty}^{\infty} \sum_{\tau_2=-\infty}^{\infty} C_{3,x}(\tau_1, \tau_2) e^{-j(\omega_1\tau_1 + \omega_2\tau_2)}
+\end{equation}
+
+\subsubsection{Properties of Bispectrum}
+
+\begin{enumerate}
+    \item \textbf{Symmetry}: $B_x(\omega_1, \omega_2) = B_x(\omega_2, \omega_1) = B_x^*(\omega_1, \omega_2)$
+    \item \textbf{Periodicity}: $B_x(\omega_1, \omega_2) = B_x(\omega_1 + 2\pi, \omega_2) = B_x(\omega_1, \omega_2 + 2\pi)$
+    \item \textbf{Quadratic Phase Coupling}: The bispectrum can detect quadratic phase coupling between frequency components
+\end{enumerate}
+
+\subsection{Trispectrum}
+
+The trispectrum is the three-dimensional Fourier transform of the fourth-order cumulant:
+
+\begin{equation}
+T_x(\omega_1, \omega_2, \omega_3) = \sum_{\tau_1=-\infty}^{\infty} \sum_{\tau_2=-\infty}^{\infty} \sum_{\tau_3=-\infty}^{\infty} C_{4,x}(\tau_1, \tau_2, \tau_3) e^{-j(\omega_1\tau_1 + \omega_2\tau_2 + \omega_3\tau_3)}
+\end{equation}
+
+\subsection{Estimation of Higher-Order Spectra}
+
+\subsubsection{Direct Method}
+
+The direct method estimates the bispectrum as:
+
+\begin{equation}
+\hat{B}_x(\omega_1, \omega_2) = \frac{1}{N} \sum_{n=0}^{N-1} X(n)X(n+\omega_1)X^*(n+\omega_1+\omega_2)
+\end{equation}
+
+where $X(n)$ is the DFT of the signal $x[n]$.
+
+\subsubsection{Indirect Method}
+
+The indirect method first estimates the cumulant sequence and then computes its Fourier transform:
+
+\begin{equation}
+\hat{C}_{3,x}(\tau_1, \tau_2) = \frac{1}{N} \sum_{n=0}^{N-1} x[n]x[n+\tau_1]x[n+\tau_2]
+\end{equation}
+
+\section{Rotordynamics Theory}
+
+\subsection{Rotor Dynamics Equations}
+
+The equation of motion for a rotor system can be written as:
+
+\begin{equation}
+M\ddot{q} + C\dot{q} + Kq = F(t)
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $M$ is the mass matrix
+    \item $C$ is the damping matrix
+    \item $K$ is the stiffness matrix
+    \item $q$ is the displacement vector
+    \item $F(t)$ is the force vector
+\end{itemize}
+
+\subsection{Unbalance Response}
+
+For a rotor with unbalance, the response at frequency $\omega$ is:
+
+\begin{equation}
+X(\omega) = H(\omega)U(\omega)
+\end{equation}
+
+where $H(\omega)$ is the frequency response function and $U(\omega)$ is the unbalance force.
+
+\subsection{Critical Speeds}
+
+Critical speeds occur when the excitation frequency coincides with the natural frequencies of the system. At these speeds, the system response can become very large, potentially leading to failure.
+
+\section{Fault Signatures in Vibration Signals}
+
+\subsection{Rotor Unbalance}
+
+Rotor unbalance typically produces:
+
+\begin{itemize}
+    \item Dominant frequency component at the rotational frequency
+    \item Harmonic components at multiples of the rotational frequency
+    \item Phase relationships between different measurement points
+\end{itemize}
+
+\subsection{Bearing Defects}
+
+Bearing defects produce characteristic frequencies:
+
+\begin{itemize}
+    \item Ball Pass Frequency Outer (BPFO)
+    \item Ball Pass Frequency Inner (BPFI)
+    \item Ball Spin Frequency (BSF)
+    \item Fundamental Train Frequency (FTF)
+\end{itemize}
+
+\subsection{Misalignment}
+
+Misalignment typically produces:
+
+\begin{itemize}
+    \item High axial vibration
+    \item 2X rotational frequency component
+    \item Phase differences between horizontal and vertical measurements
+\end{itemize}
+
+\section{Feature Extraction from HOS}
+
+\subsection{Bispectrum Features}
+
+Common features extracted from the bispectrum include:
+
+\begin{enumerate}
+    \item \textbf{Mean Magnitude}: $\text{MM} = \frac{1}{N} \sum_{\omega_1, \omega_2} |B_x(\omega_1, \omega_2)|$
+    \item \textbf{Sum of Logarithmic Amplitudes}: $\text{SLA} = \sum_{\omega_1, \omega_2} \log|B_x(\omega_1, \omega_2)|$
+    \item \textbf{Sum of Logarithmic Amplitudes of Diagonal Elements}: $\text{SLADE} = \sum_{\omega} \log|B_x(\omega, \omega)|$
+    \item \textbf{First-Order Spectral Moment}: $\text{FOSM} = \sum_{\omega_1, \omega_2} \omega_1 |B_x(\omega_1, \omega_2)|$
+    \item \textbf{Second-Order Spectral Moment}: $\text{SOSM} = \sum_{\omega_1, \omega_2} \omega_1^2 |B_x(\omega_1, \omega_2)|$
+\end{enumerate}
+
+\subsection{Trispectrum Features}
+
+Similar features can be extracted from the trispectrum:
+
+\begin{enumerate}
+    \item \textbf{Mean Magnitude}: $\text{MM} = \frac{1}{N} \sum_{\omega_1, \omega_2, \omega_3} |T_x(\omega_1, \omega_2, \omega_3)|$
+    \item \textbf{Sum of Logarithmic Amplitudes}: $\text{SLA} = \sum_{\omega_1, \omega_2, \omega_3} \log|T_x(\omega_1, \omega_2, \omega_3)|$
+\end{enumerate}
+
+\section{Computational Considerations}
+
+\subsection{Computational Complexity}
+
+The computational complexity of HOS analysis is:
+
+\begin{itemize}
+    \item Bispectrum: $O(N^3)$ for direct computation
+    \item Trispectrum: $O(N^4)$ for direct computation
+\end{itemize}
+
+where $N$ is the signal length.
+
+\subsection{Efficient Algorithms}
+
+Several approaches can reduce computational complexity:
+
+\begin{enumerate}
+    \item \textbf{Segmentation}: Divide long signals into shorter segments
+    \item \textbf{Decimation}: Reduce sampling rate when appropriate
+    \item \textbf{Parallel Processing}: Utilize multiple processors
+    \item \textbf{FFT-based Methods}: Use FFT for efficient computation
+\end{enumerate}
+
+\section{Summary}
+
+This chapter has established the theoretical foundations for higher-order spectral analysis in the context of rotordynamics fault detection. The mathematical framework provides the basis for implementing HOS-based fault detection algorithms, while the rotordynamics theory connects the signal processing concepts to the physical phenomena being analyzed.
+
+The next chapter will present the methodology for applying these theoretical concepts to practical fault detection problems.

@@ -331,3 +331,4 @@ This study guide provides a comprehensive roadmap for mastering Higher Order Spe
 
 This study guide provides a structured approach to mastering Higher Order Spectra analysis. Success requires dedication, consistent practice, and active engagement with both theoretical concepts and practical applications. Regular assessment and feedback will help ensure steady progress toward the learning objectives.
 
+

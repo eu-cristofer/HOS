@@ -1,0 +1,203 @@
+% =============================================================================
+% Higher Order Spectra Analysis for Rotordynamics Fault Detection
+% Master's Thesis - Federal University of Uberlândia
+% Author: [Your Name]
+% Date: \today
+% =============================================================================
+
+\documentclass[12pt,a4paper,twoside]{report}
+
+% =============================================================================
+% PACKAGES AND CONFIGURATION
+% =============================================================================
+
+% Basic packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{siunitx}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{chemfig}
+\usepackage{url}
+\usepackage{cite}
+\usepackage{natbib}
+\usepackage{cleveref}
+
+% Page setup
+\geometry{
+    left=3cm,
+    right=2.5cm,
+    top=3cm,
+    bottom=3cm,
+    headheight=15pt
+}
+
+% Header and footer setup
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Chapter and section formatting
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+
+% Hyperlink setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=red,
+    bookmarksnumbered=true,
+    bookmarksopen=true,
+    pdfstartview=FitH
+}
+
+% Code listing setup
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt,
+    showstringspaces=false,
+    tabsize=2,
+    captionpos=b,
+    language=Python
+}
+
+% Custom commands
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
+\newcommand{\eqref}[1]{Equation~\ref{#1}}
+\newcommand{\chapref}[1]{Chapter~\ref{#1}}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+
+% Mathematical operators
+\DeclareMathOperator{\FFT}{FFT}
+\DeclareMathOperator{\DFT}{DFT}
+\DeclareMathOperator{\PSD}{PSD}
+\DeclareMathOperator{\RMS}{RMS}
+\DeclareMathOperator{\SNR}{SNR}
+
+% =============================================================================
+% DOCUMENT INFORMATION
+% =============================================================================
+
+\title{
+    \textbf{Higher Order Spectra Analysis for Rotordynamics Fault Detection}\\[0.5cm]
+    \large{A Comprehensive Study of Spectral Analysis Techniques and Machine Learning Applications}\\[0.3cm]
+    \normalsize{Master's Thesis}
+}
+
+\author{
+    [Your Name]\\
+    \small{Federal University of Uberlândia}\\
+    \small{Department of Mechanical Engineering}\\
+    \small{Program in Mechanical Engineering}
+}
+
+\date{\today}
+
+% =============================================================================
+% DOCUMENT CONTENT
+% =============================================================================
+
+\begin{document}
+
+% Title page
+\maketitle
+
+% Abstract
+\input{chapters/abstract}
+
+% Table of contents
+\tableofcontents
+
+% List of figures
+\listoffigures
+
+% List of tables
+\listoftables
+
+% List of algorithms (if any)
+\listofalgorithms
+
+% =============================================================================
+% MAIN CONTENT
+% =============================================================================
+
+% Chapter 1: Introduction
+\input{chapters/chapter01_introduction}
+
+% Chapter 2: Literature Review
+\input{chapters/chapter02_literature_review}
+
+% Chapter 3: Theoretical Background
+\input{chapters/chapter03_theoretical_background}
+
+% Chapter 4: Methodology
+\input{chapters/chapter04_methodology}
+
+% Chapter 5: Implementation and Results
+\input{chapters/chapter05_implementation_results}
+
+% Chapter 6: Discussion
+\input{chapters/chapter06_discussion}
+
+% Chapter 7: Conclusions and Future Work
+\input{chapters/chapter07_conclusions}
+
+% =============================================================================
+% REFERENCES
+% =============================================================================
+
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+% =============================================================================
+% APPENDICES
+% =============================================================================
+
+\appendix
+
+% Appendix A: Mathematical Derivations
+\input{appendix/appendixA_mathematical_derivations}
+
+% Appendix B: Code Implementation
+\input{appendix/appendixB_code_implementation}
+
+% Appendix C: Additional Results
+\input{appendix/appendixC_additional_results}
+
+% Appendix D: Dataset Description
+\input{appendix/appendixD_dataset_description}
+
+\end{document}

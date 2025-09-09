@@ -1,0 +1,336 @@
+% =============================================================================
+% CHAPTER 4: METHODOLOGY
+% =============================================================================
+
+\chapter{Methodology}
+
+\section{Introduction}
+
+This chapter presents the comprehensive methodology developed for applying higher-order spectral analysis to rotordynamics fault detection. The methodology encompasses signal preprocessing, feature extraction, machine learning classification, and validation procedures. The approach is designed to be systematic, reproducible, and applicable to real-world vibration data.
+
+\section{Overall Framework}
+
+The proposed methodology consists of five main stages:
+
+\begin{enumerate}
+    \item \textbf{Data Collection and Preprocessing}
+    \item \textbf{Feature Extraction}
+    \item \textbf{Feature Selection and Dimensionality Reduction}
+    \item \textbf{Machine Learning Classification}
+    \item \textbf{Validation and Performance Evaluation}
+\end{enumerate}
+
+\figref{fig:methodology_framework} illustrates the overall framework and data flow.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/methodology_framework.pdf}
+\caption{Overall methodology framework for HOS-based fault detection}
+\label{fig:methodology_framework}
+\end{figure}
+
+\section{Data Collection and Preprocessing}
+
+\subsection{Signal Acquisition}
+
+Vibration signals are acquired using accelerometers mounted on the bearing housings of rotating machinery. The signals are sampled at a frequency sufficient to capture the relevant frequency components, typically 10-20 times the maximum frequency of interest.
+
+\subsection{Preprocessing Steps}
+
+\subsubsection{Detrending}
+
+Linear trends are removed from the signals to eliminate slow variations that may interfere with spectral analysis:
+
+\begin{equation}
+x_{detrended}[n] = x[n] - \text{detrend}(x[n])
+\end{equation}
+
+\subsubsection{Filtering}
+
+Bandpass filtering is applied to remove noise outside the frequency range of interest:
+
+\begin{equation}
+x_{filtered}[n] = \text{bandpass}(x_{detrended}[n], f_{low}, f_{high}, f_s)
+\end{equation}
+
+where $f_{low}$ and $f_{high}$ are the cutoff frequencies.
+
+\subsubsection{Segmentation}
+
+Long signals are divided into shorter segments for analysis. Each segment should be long enough to provide adequate frequency resolution while maintaining stationarity:
+
+\begin{equation}
+x_i[n] = x[n + i \cdot L], \quad n = 0, 1, \ldots, L-1
+\end{equation}
+
+where $L$ is the segment length.
+
+\subsubsection{Windowing}
+
+A window function is applied to each segment to reduce spectral leakage:
+
+\begin{equation}
+x_{windowed}[n] = x[n] \cdot w[n]
+\end{equation}
+
+Common window functions include Hann, Hamming, and Blackman windows.
+
+\section{Feature Extraction}
+
+\subsection{Traditional Features}
+
+\subsubsection{Time-Domain Features}
+
+\begin{enumerate}
+    \item \textbf{Root Mean Square (RMS)}:
+    \begin{equation}
+    \text{RMS} = \sqrt{\frac{1}{N} \sum_{n=0}^{N-1} x^2[n]}
+    \end{equation}
+    
+    \item \textbf{Peak Value}:
+    \begin{equation}
+    \text{Peak} = \max(|x[n]|)
+    \end{equation}
+    
+    \item \textbf{Crest Factor}:
+    \begin{equation}
+    \text{CF} = \frac{\text{Peak}}{\text{RMS}}
+    \end{equation}
+    
+    \item \textbf{Kurtosis}:
+    \begin{equation}
+    \text{Kurtosis} = \frac{1}{N} \sum_{n=0}^{N-1} \left(\frac{x[n] - \mu}{\sigma}\right)^4
+    \end{equation}
+    
+    \item \textbf{Skewness}:
+    \begin{equation}
+    \text{Skewness} = \frac{1}{N} \sum_{n=0}^{N-1} \left(\frac{x[n] - \mu}{\sigma}\right)^3
+    \end{equation}
+\end{enumerate}
+
+\subsubsection{Frequency-Domain Features}
+
+\begin{enumerate}
+    \item \textbf{Power Spectral Density (PSD)}: Computed using Welch's method
+    \item \textbf{Spectral Centroid}:
+    \begin{equation}
+    \text{SC} = \frac{\sum_{k=0}^{N-1} k \cdot P[k]}{\sum_{k=0}^{N-1} P[k]}
+    \end{equation}
+    
+    \item \textbf{Spectral Rolloff}:
+    \begin{equation}
+    \text{SR} = \arg\max_k \left(\sum_{i=0}^{k} P[i] \geq 0.85 \sum_{i=0}^{N-1} P[i]\right)
+    \end{equation}
+    
+    \item \textbf{Spectral Bandwidth}:
+    \begin{equation}
+    \text{SB} = \sqrt{\frac{\sum_{k=0}^{N-1} (k - \text{SC})^2 \cdot P[k]}{\sum_{k=0}^{N-1} P[k]}}
+    \end{equation}
+\end{enumerate}
+
+\subsection{Higher-Order Spectral Features}
+
+\subsubsection{Bispectrum Features}
+
+The bispectrum is computed using the direct method:
+
+\begin{equation}
+B_x(\omega_1, \omega_2) = \frac{1}{N} \sum_{n=0}^{N-1} X(n)X(n+\omega_1)X^*(n+\omega_1+\omega_2)
+\end{equation}
+
+Features extracted from the bispectrum include:
+
+\begin{enumerate}
+    \item \textbf{Mean Magnitude}:
+    \begin{equation}
+    \text{MM} = \frac{1}{N^2} \sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} |B_x(\omega_1, \omega_2)|
+    \end{equation}
+    
+    \item \textbf{Sum of Logarithmic Amplitudes}:
+    \begin{equation}
+    \text{SLA} = \sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} \log(|B_x(\omega_1, \omega_2)| + \epsilon)
+    \end{equation}
+    
+    \item \textbf{Sum of Logarithmic Amplitudes of Diagonal Elements}:
+    \begin{equation}
+    \text{SLADE} = \sum_{\omega=0}^{N-1} \log(|B_x(\omega, \omega)| + \epsilon)
+    \end{equation}
+    
+    \item \textbf{First-Order Spectral Moment}:
+    \begin{equation}
+    \text{FOSM} = \frac{\sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} \omega_1 |B_x(\omega_1, \omega_2)|}{\sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} |B_x(\omega_1, \omega_2)|}
+    \end{equation}
+    
+    \item \textbf{Second-Order Spectral Moment}:
+    \begin{equation}
+    \text{SOSM} = \frac{\sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} \omega_1^2 |B_x(\omega_1, \omega_2)|}{\sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} |B_x(\omega_1, \omega_2)|}
+    \end{equation}
+\end{enumerate}
+
+\subsubsection{Trispectrum Features}
+
+The trispectrum is computed similarly:
+
+\begin{equation}
+T_x(\omega_1, \omega_2, \omega_3) = \frac{1}{N} \sum_{n=0}^{N-1} X(n)X(n+\omega_1)X(n+\omega_2)X^*(n+\omega_1+\omega_2+\omega_3)
+\end{equation}
+
+Features extracted from the trispectrum include:
+
+\begin{enumerate}
+    \item \textbf{Mean Magnitude}:
+    \begin{equation}
+    \text{MM} = \frac{1}{N^3} \sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} \sum_{\omega_3=0}^{N-1} |T_x(\omega_1, \omega_2, \omega_3)|
+    \end{equation}
+    
+    \item \textbf{Sum of Logarithmic Amplitudes}:
+    \begin{equation}
+    \text{SLA} = \sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} \sum_{\omega_3=0}^{N-1} \log(|T_x(\omega_1, \omega_2, \omega_3)| + \epsilon)
+    \end{equation}
+\end{enumerate}
+
+\section{Feature Selection and Dimensionality Reduction}
+
+\subsection{Feature Selection Methods}
+
+\subsubsection{Statistical Tests}
+
+Statistical tests are used to identify features that show significant differences between fault classes:
+
+\begin{itemize}
+    \item \textbf{t-test}: For normally distributed features
+    \item \textbf{Mann-Whitney U test}: For non-parametric comparison
+    \item \textbf{Kruskal-Wallis test}: For multiple group comparison
+\end{itemize}
+
+\subsubsection{Correlation Analysis}
+
+Features with high correlation are identified and redundant features are removed:
+
+\begin{equation}
+r_{ij} = \frac{\sum_{k=1}^{N} (f_{ik} - \bar{f_i})(f_{jk} - \bar{f_j})}{\sqrt{\sum_{k=1}^{N} (f_{ik} - \bar{f_i})^2 \sum_{k=1}^{N} (f_{jk} - \bar{f_j})^2}}
+\end{equation}
+
+\subsection{Dimensionality Reduction}
+
+\subsubsection{Principal Component Analysis (PCA)}
+
+PCA is applied to reduce the dimensionality of the feature space while preserving the maximum variance:
+
+\begin{equation}
+Y = XW
+\end{equation}
+
+where $W$ contains the eigenvectors of the covariance matrix.
+
+\subsubsection{Linear Discriminant Analysis (LDA)}
+
+LDA finds the linear combination of features that maximizes the separation between classes:
+
+\begin{equation}
+J(w) = \frac{w^T S_B w}{w^T S_W w}
+\end{equation}
+
+where $S_B$ is the between-class scatter matrix and $S_W$ is the within-class scatter matrix.
+
+\section{Machine Learning Classification}
+
+\subsection{Classification Algorithms}
+
+\subsubsection{Support Vector Machine (SVM)}
+
+SVM finds the optimal hyperplane that separates different classes with maximum margin:
+
+\begin{equation}
+\min_{w,b} \frac{1}{2}||w||^2 + C \sum_{i=1}^{N} \xi_i
+\end{equation}
+
+subject to:
+\begin{align}
+y_i(w^T \phi(x_i) + b) &\geq 1 - \xi_i \\
+\xi_i &\geq 0
+\end{align}
+
+\subsubsection{Random Forest}
+
+Random Forest combines multiple decision trees to improve classification performance:
+
+\begin{equation}
+\hat{y} = \frac{1}{B} \sum_{b=1}^{B} T_b(x)
+\end{equation}
+
+where $T_b(x)$ is the prediction of the $b$-th tree.
+
+\subsubsection{Neural Networks}
+
+A multi-layer perceptron is used for classification:
+
+\begin{equation}
+y = f(W_2 f(W_1 x + b_1) + b_2)
+\end{equation}
+
+where $f$ is the activation function, $W_i$ are weight matrices, and $b_i$ are bias vectors.
+
+\subsection{Model Validation}
+
+\subsubsection{Cross-Validation}
+
+K-fold cross-validation is used to assess model performance:
+
+\begin{equation}
+\text{CV} = \frac{1}{K} \sum_{k=1}^{K} \text{Error}_k
+\end{equation}
+
+\subsubsection{Performance Metrics}
+
+\begin{enumerate}
+    \item \textbf{Accuracy}:
+    \begin{equation}
+    \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+    \end{equation}
+    
+    \item \textbf{Precision}:
+    \begin{equation}
+    \text{Precision} = \frac{TP}{TP + FP}
+    \end{equation}
+    
+    \item \textbf{Recall}:
+    \begin{equation}
+    \text{Recall} = \frac{TP}{TP + FN}
+    \end{equation}
+    
+    \item \textbf{F1-Score}:
+    \begin{equation}
+    \text{F1} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+    \end{equation}
+\end{enumerate}
+
+\section{Implementation Framework}
+
+\subsection{Software Architecture}
+
+The implementation follows a modular architecture with the following components:
+
+\begin{enumerate}
+    \item \textbf{Signal Processing Module}: Handles signal preprocessing and basic analysis
+    \item \textbf{HOS Analysis Module}: Implements higher-order spectral analysis
+    \item \textbf{Feature Extraction Module}: Extracts features from signals and spectra
+    \item \textbf{Machine Learning Module}: Implements classification algorithms
+    \item \textbf{Validation Module}: Handles model validation and performance evaluation
+\end{enumerate}
+
+\subsection{Data Flow}
+
+The data flows through the system as follows:
+
+\begin{enumerate}
+    \item Raw vibration signals are loaded and preprocessed
+    \item Features are extracted using both traditional and HOS methods
+    \item Features are selected and dimensionality is reduced
+    \item Machine learning models are trained and validated
+    \item Performance is evaluated using appropriate metrics
+\end{enumerate}
+
+\section{Summary}
+
+This chapter has presented a comprehensive methodology for applying higher-order spectral analysis to rotordynamics fault detection. The methodology is systematic, reproducible, and designed to handle real-world vibration data. The next chapter will present the implementation details and experimental results obtained using this methodology.

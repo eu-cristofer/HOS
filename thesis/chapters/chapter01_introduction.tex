@@ -1,0 +1,84 @@
+% =============================================================================
+% CHAPTER 1: INTRODUCTION
+% =============================================================================
+
+\chapter{Introduction}
+
+\section{Background and Motivation}
+
+Rotating machinery plays a crucial role in modern industrial systems, from power generation to manufacturing processes. The reliable operation of these systems is essential for maintaining productivity and preventing catastrophic failures that can result in significant economic losses and safety hazards. Condition monitoring and fault detection techniques have emerged as essential tools for ensuring the reliability and efficiency of rotating machinery.
+
+Traditional vibration analysis methods, primarily based on power spectral density (PSD) and time-domain statistical measures, have been widely used for fault detection. However, these methods often struggle with complex fault patterns and noise-contaminated signals, particularly in cases where faults exhibit nonlinear characteristics or when multiple fault types coexist.
+
+Higher Order Spectra (HOS) analysis offers a promising alternative by capturing phase relationships and nonlinear interactions in signals that are not visible in traditional second-order statistics. The bispectrum and trispectrum, in particular, have shown potential for detecting subtle fault signatures that conventional methods might miss.
+
+\section{Problem Statement}
+
+Despite the theoretical advantages of HOS analysis, several challenges remain in its practical application to rotordynamics fault detection:
+
+\begin{enumerate}
+    \item \textbf{Computational Complexity}: HOS analysis requires significantly more computational resources compared to traditional spectral methods.
+    \item \textbf{Feature Selection}: The high-dimensional nature of HOS features requires careful selection and dimensionality reduction techniques.
+    \item \textbf{Interpretability}: The physical meaning of higher-order spectral features is often less intuitive than traditional measures.
+    \item \textbf{Validation}: Limited availability of comprehensive datasets for validating HOS-based fault detection methods.
+\end{enumerate}
+
+\section{Research Objectives}
+
+The primary objective of this research is to develop and validate a comprehensive framework for fault detection in rotordynamic systems using higher-order spectral analysis combined with machine learning techniques. Specific objectives include:
+
+\begin{enumerate}
+    \item Conduct a comprehensive literature review of HOS analysis techniques and their applications in rotordynamics.
+    \item Develop theoretical foundations for applying HOS analysis to vibration signals from rotating machinery.
+    \item Design and implement a systematic methodology for feature extraction using higher-order spectral measures.
+    \item Create a comprehensive software framework for HOS-based fault detection.
+    \item Validate the proposed methodology using both simulated and real-world vibration data.
+    \item Compare the performance of HOS-based methods with traditional fault detection approaches.
+    \item Evaluate different machine learning algorithms for fault classification using HOS features.
+\end{enumerate}
+
+\section{Research Contributions}
+
+This thesis makes several contributions to the field of rotordynamics fault detection:
+
+\begin{enumerate}
+    \item \textbf{Theoretical Framework}: A comprehensive theoretical foundation for applying HOS analysis to rotordynamic fault detection.
+    \item \textbf{Methodology}: A systematic approach for feature extraction and selection using higher-order spectral measures.
+    \item \textbf{Software Implementation}: A complete Python-based framework for HOS analysis and fault detection.
+    \item \textbf{Experimental Validation}: Comprehensive validation using multiple datasets and fault types.
+    \item \textbf{Performance Comparison}: Detailed comparison of HOS-based methods with traditional approaches.
+\end{enumerate}
+
+\section{Thesis Organization}
+
+This thesis is organized into seven chapters:
+
+\begin{itemize}
+    \item \textbf{Chapter 1} (Introduction): Provides background, motivation, and research objectives.
+    \item \textbf{Chapter 2} (Literature Review): Comprehensive review of relevant literature in spectral analysis and fault detection.
+    \item \textbf{Chapter 3} (Theoretical Background): Mathematical foundations of HOS analysis and signal processing.
+    \item \textbf{Chapter 4} (Methodology): Detailed description of the proposed approach and implementation framework.
+    \item \textbf{Chapter 5} (Implementation and Results): Software implementation and experimental results.
+    \item \textbf{Chapter 6} (Discussion): Analysis and interpretation of results.
+    \item \textbf{Chapter 7} (Conclusions and Future Work): Summary of contributions and future research directions.
+\end{itemize}
+
+\section{Scope and Limitations}
+
+This research focuses on:
+
+\begin{itemize}
+    \item Vibration-based fault detection in rotating machinery
+    \item Higher-order spectral analysis techniques (bispectrum and trispectrum)
+    \item Machine learning classification algorithms
+    \item Common fault types: bearing defects, rotor unbalance, and misalignment
+\end{itemize}
+
+The study is limited to:
+
+\begin{itemize}
+    \item Stationary or quasi-stationary signals
+    \item Single-point vibration measurements
+    \item Offline analysis (real-time implementation not addressed)
+    \item Specific fault types commonly found in industrial applications
+\end{itemize}

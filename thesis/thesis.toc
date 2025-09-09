@@ -1,0 +1,267 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{4}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Background and Motivation}{4}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Problem Statement}{4}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Research Objectives}{5}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Research Contributions}{5}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Thesis Organization}{6}{section.1.5}%
+\contentsline {section}{\numberline {1.6}Scope and Limitations}{6}{section.1.6}%
+\contentsline {chapter}{\numberline {2}Literature Review}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Introduction}{7}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Traditional Vibration Analysis Methods}{7}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Time-Domain Analysis}{7}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Frequency-Domain Analysis}{7}{subsection.2.2.2}%
+\contentsline {section}{\numberline {2.3}Higher-Order Spectral Analysis}{8}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Theoretical Foundations}{8}{subsection.2.3.1}%
+\contentsline {subsubsection}{Cumulants and Moments}{8}{subsubsection*.2}%
+\contentsline {subsubsection}{Bispectrum}{8}{subsubsection*.3}%
+\contentsline {subsubsection}{Trispectrum}{8}{subsubsection*.4}%
+\contentsline {subsection}{\numberline {2.3.2}Properties of Higher-Order Spectra}{8}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Applications in Fault Detection}{9}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Bearing Fault Detection}{9}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Gear Fault Detection}{9}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Rotor Fault Detection}{9}{subsection.2.4.3}%
+\contentsline {section}{\numberline {2.5}Machine Learning in Fault Detection}{9}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Feature Extraction}{9}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Classification Algorithms}{9}{subsection.2.5.2}%
+\contentsline {subsubsection}{Support Vector Machines (SVM)}{10}{subsubsection*.5}%
+\contentsline {subsubsection}{Random Forest}{10}{subsubsection*.6}%
+\contentsline {subsubsection}{Neural Networks}{10}{subsubsection*.7}%
+\contentsline {section}{\numberline {2.6}Rotordynamics Applications}{10}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Rotor Dynamics Fundamentals}{10}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Fault Types in Rotating Machinery}{10}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Traditional Detection Methods}{11}{subsection.2.6.3}%
+\contentsline {section}{\numberline {2.7}Research Gaps and Opportunities}{11}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Summary}{11}{section.2.8}%
+\contentsline {chapter}{\numberline {3}Theoretical Background}{12}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Introduction}{12}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Signal Processing Fundamentals}{12}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Continuous-Time Signals}{12}{subsection.3.2.1}%
+\contentsline {subsubsection}{Signal Properties}{12}{subsubsection*.8}%
+\contentsline {subsection}{\numberline {3.2.2}Discrete-Time Signals}{12}{subsection.3.2.2}%
+\contentsline {subsubsection}{Sampling Theorem}{13}{subsubsection*.9}%
+\contentsline {section}{\numberline {3.3}Higher-Order Statistics}{13}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Moments and Cumulants}{13}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Properties of Cumulants}{13}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Higher-Order Spectral Analysis}{13}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Bispectrum}{13}{subsection.3.4.1}%
+\contentsline {subsubsection}{Properties of Bispectrum}{14}{subsubsection*.10}%
+\contentsline {subsection}{\numberline {3.4.2}Trispectrum}{14}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Estimation of Higher-Order Spectra}{14}{subsection.3.4.3}%
+\contentsline {subsubsection}{Direct Method}{14}{subsubsection*.11}%
+\contentsline {subsubsection}{Indirect Method}{14}{subsubsection*.12}%
+\contentsline {section}{\numberline {3.5}Rotordynamics Theory}{14}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Rotor Dynamics Equations}{14}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Unbalance Response}{15}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Critical Speeds}{15}{subsection.3.5.3}%
+\contentsline {section}{\numberline {3.6}Fault Signatures in Vibration Signals}{15}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}Rotor Unbalance}{15}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}Bearing Defects}{15}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.3}Misalignment}{15}{subsection.3.6.3}%
+\contentsline {section}{\numberline {3.7}Feature Extraction from HOS}{16}{section.3.7}%
+\contentsline {subsection}{\numberline {3.7.1}Bispectrum Features}{16}{subsection.3.7.1}%
+\contentsline {subsection}{\numberline {3.7.2}Trispectrum Features}{16}{subsection.3.7.2}%
+\contentsline {section}{\numberline {3.8}Computational Considerations}{16}{section.3.8}%
+\contentsline {subsection}{\numberline {3.8.1}Computational Complexity}{16}{subsection.3.8.1}%
+\contentsline {subsection}{\numberline {3.8.2}Efficient Algorithms}{16}{subsection.3.8.2}%
+\contentsline {section}{\numberline {3.9}Summary}{17}{section.3.9}%
+\contentsline {chapter}{\numberline {4}Methodology}{18}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Introduction}{18}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Overall Framework}{18}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Data Collection and Preprocessing}{19}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Signal Acquisition}{19}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Preprocessing Steps}{19}{subsection.4.3.2}%
+\contentsline {subsubsection}{Detrending}{19}{subsubsection*.14}%
+\contentsline {subsubsection}{Filtering}{20}{subsubsection*.15}%
+\contentsline {subsubsection}{Segmentation}{20}{subsubsection*.16}%
+\contentsline {subsubsection}{Windowing}{20}{subsubsection*.17}%
+\contentsline {section}{\numberline {4.4}Feature Extraction}{20}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Traditional Features}{20}{subsection.4.4.1}%
+\contentsline {subsubsection}{Time-Domain Features}{20}{subsubsection*.18}%
+\contentsline {subsubsection}{Frequency-Domain Features}{21}{subsubsection*.19}%
+\contentsline {subsection}{\numberline {4.4.2}Higher-Order Spectral Features}{21}{subsection.4.4.2}%
+\contentsline {subsubsection}{Bispectrum Features}{21}{subsubsection*.20}%
+\contentsline {subsubsection}{Trispectrum Features}{22}{subsubsection*.21}%
+\contentsline {section}{\numberline {4.5}Feature Selection and Dimensionality Reduction}{22}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Feature Selection Methods}{22}{subsection.4.5.1}%
+\contentsline {subsubsection}{Statistical Tests}{22}{subsubsection*.22}%
+\contentsline {subsubsection}{Correlation Analysis}{22}{subsubsection*.23}%
+\contentsline {subsection}{\numberline {4.5.2}Dimensionality Reduction}{22}{subsection.4.5.2}%
+\contentsline {subsubsection}{Principal Component Analysis (PCA)}{22}{subsubsection*.24}%
+\contentsline {subsubsection}{Linear Discriminant Analysis (LDA)}{23}{subsubsection*.25}%
+\contentsline {section}{\numberline {4.6}Machine Learning Classification}{23}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Classification Algorithms}{23}{subsection.4.6.1}%
+\contentsline {subsubsection}{Support Vector Machine (SVM)}{23}{subsubsection*.26}%
+\contentsline {subsubsection}{Random Forest}{23}{subsubsection*.27}%
+\contentsline {subsubsection}{Neural Networks}{23}{subsubsection*.28}%
+\contentsline {subsection}{\numberline {4.6.2}Model Validation}{24}{subsection.4.6.2}%
+\contentsline {subsubsection}{Cross-Validation}{24}{subsubsection*.29}%
+\contentsline {subsubsection}{Performance Metrics}{24}{subsubsection*.30}%
+\contentsline {section}{\numberline {4.7}Implementation Framework}{24}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}Software Architecture}{24}{subsection.4.7.1}%
+\contentsline {subsection}{\numberline {4.7.2}Data Flow}{24}{subsection.4.7.2}%
+\contentsline {section}{\numberline {4.8}Summary}{25}{section.4.8}%
+\contentsline {chapter}{\numberline {5}Implementation and Results}{26}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Introduction}{26}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Software Implementation}{26}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Development Environment}{26}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}System Architecture}{26}{subsection.5.2.2}%
+\contentsline {subsubsection}{Core Modules}{27}{subsubsection*.32}%
+\contentsline {subsection}{\numberline {5.2.3}Key Implementation Details}{27}{subsection.5.2.3}%
+\contentsline {subsubsection}{HOS Computation}{27}{subsubsection*.33}%
+\contentsline {subsubsection}{Feature Extraction}{28}{subsubsection*.34}%
+\contentsline {section}{\numberline {5.3}Experimental Setup}{29}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Datasets}{29}{subsection.5.3.1}%
+\contentsline {subsubsection}{Simulated Data}{29}{subsubsection*.35}%
+\contentsline {subsubsection}{Real Data}{30}{subsubsection*.36}%
+\contentsline {subsection}{\numberline {5.3.2}Experimental Parameters}{30}{subsection.5.3.2}%
+\contentsline {section}{\numberline {5.4}Results and Analysis}{30}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Feature Analysis}{30}{subsection.5.4.1}%
+\contentsline {subsubsection}{Feature Importance}{30}{subsubsection*.38}%
+\contentsline {subsubsection}{Feature Correlation Analysis}{31}{subsubsection*.40}%
+\contentsline {subsection}{\numberline {5.4.2}Classification Performance}{32}{subsection.5.4.2}%
+\contentsline {subsubsection}{Individual Algorithm Performance}{32}{subsubsection*.42}%
+\contentsline {subsubsection}{Confusion Matrices}{32}{subsubsection*.44}%
+\contentsline {subsection}{\numberline {5.4.3}Feature Set Comparison}{33}{subsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.4.4}Computational Performance}{33}{subsection.5.4.4}%
+\contentsline {subsection}{\numberline {5.4.5}Case Studies}{34}{subsection.5.4.5}%
+\contentsline {subsubsection}{Case Study 1: Bearing Fault Detection}{34}{subsubsection*.48}%
+\contentsline {subsubsection}{Case Study 2: Rotor Unbalance Detection}{34}{subsubsection*.50}%
+\contentsline {subsection}{\numberline {5.4.6}Validation Results}{35}{subsection.5.4.6}%
+\contentsline {subsubsection}{Cross-Validation Results}{35}{subsubsection*.52}%
+\contentsline {section}{\numberline {5.5}Summary}{36}{section.5.5}%
+\contentsline {chapter}{\numberline {6}Discussion}{37}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Introduction}{37}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Effectiveness of Higher-Order Spectral Analysis}{37}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Performance Improvements}{37}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Physical Interpretation}{37}{subsection.6.2.2}%
+\contentsline {section}{\numberline {6.3}Feature Analysis and Selection}{38}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Feature Importance Ranking}{38}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Feature Redundancy}{38}{subsection.6.3.2}%
+\contentsline {section}{\numberline {6.4}Algorithm Performance Comparison}{38}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Random Forest Superiority}{38}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}SVM Performance}{39}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}Neural Network Results}{39}{subsection.6.4.3}%
+\contentsline {section}{\numberline {6.5}Computational Considerations}{39}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}Computational Complexity}{39}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}Practical Implementation}{39}{subsection.6.5.2}%
+\contentsline {section}{\numberline {6.6}Comparison with Existing Methods}{40}{section.6.6}%
+\contentsline {subsection}{\numberline {6.6.1}Traditional Vibration Analysis}{40}{subsection.6.6.1}%
+\contentsline {subsection}{\numberline {6.6.2}Literature Comparison}{40}{subsection.6.6.2}%
+\contentsline {section}{\numberline {6.7}Limitations and Challenges}{40}{section.6.7}%
+\contentsline {subsection}{\numberline {6.7.1}Methodological Limitations}{40}{subsection.6.7.1}%
+\contentsline {subsection}{\numberline {6.7.2}Data Limitations}{41}{subsection.6.7.2}%
+\contentsline {section}{\numberline {6.8}Practical Implications}{41}{section.6.8}%
+\contentsline {subsection}{\numberline {6.8.1}Industrial Applications}{41}{subsection.6.8.1}%
+\contentsline {subsection}{\numberline {6.8.2}Implementation Guidelines}{41}{subsection.6.8.2}%
+\contentsline {section}{\numberline {6.9}Research Contributions}{41}{section.6.9}%
+\contentsline {subsection}{\numberline {6.9.1}Theoretical Contributions}{41}{subsection.6.9.1}%
+\contentsline {subsection}{\numberline {6.9.2}Practical Contributions}{42}{subsection.6.9.2}%
+\contentsline {section}{\numberline {6.10}Future Research Directions}{42}{section.6.10}%
+\contentsline {subsection}{\numberline {6.10.1}Methodological Improvements}{42}{subsection.6.10.1}%
+\contentsline {subsection}{\numberline {6.10.2}Application Extensions}{42}{subsection.6.10.2}%
+\contentsline {section}{\numberline {6.11}Summary}{42}{section.6.11}%
+\contentsline {chapter}{\numberline {7}Conclusions and Future Work}{43}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Introduction}{43}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Research Summary}{43}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Objectives Achieved}{43}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Key Findings}{44}{subsection.7.2.2}%
+\contentsline {section}{\numberline {7.3}Research Contributions}{44}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Theoretical Contributions}{44}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Practical Contributions}{44}{subsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.3.3}Methodological Contributions}{45}{subsection.7.3.3}%
+\contentsline {section}{\numberline {7.4}Implications for Practice}{45}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Industrial Applications}{45}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Implementation Considerations}{45}{subsection.7.4.2}%
+\contentsline {section}{\numberline {7.5}Limitations and Challenges}{46}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Current Limitations}{46}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Technical Challenges}{46}{subsection.7.5.2}%
+\contentsline {section}{\numberline {7.6}Future Research Directions}{46}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Methodological Improvements}{46}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Application Extensions}{47}{subsection.7.6.2}%
+\contentsline {subsection}{\numberline {7.6.3}Theoretical Developments}{47}{subsection.7.6.3}%
+\contentsline {section}{\numberline {7.7}Recommendations for Future Work}{47}{section.7.7}%
+\contentsline {subsection}{\numberline {7.7.1}Short-term Recommendations}{47}{subsection.7.7.1}%
+\contentsline {subsection}{\numberline {7.7.2}Long-term Recommendations}{47}{subsection.7.7.2}%
+\contentsline {section}{\numberline {7.8}Concluding Remarks}{48}{section.7.8}%
+\contentsline {chapter}{\numberline {A}Mathematical Derivations}{49}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Derivation of Bispectrum Properties}{49}{section.A.1}%
+\contentsline {subsection}{\numberline {A.1.1}Symmetry Properties}{49}{subsection.A.1.1}%
+\contentsline {subsubsection}{Conjugate Symmetry}{49}{subsubsection*.56}%
+\contentsline {subsubsection}{Interchange Symmetry}{50}{subsubsection*.57}%
+\contentsline {section}{\numberline {A.2}Derivation of HOS Estimation Variance}{50}{section.A.2}%
+\contentsline {subsection}{\numberline {A.2.1}Variance of Bispectrum Estimate}{50}{subsection.A.2.1}%
+\contentsline {section}{\numberline {A.3}Derivation of Feature Extraction Formulas}{50}{section.A.3}%
+\contentsline {subsection}{\numberline {A.3.1}Mean Magnitude of Bispectrum}{50}{subsection.A.3.1}%
+\contentsline {subsection}{\numberline {A.3.2}Sum of Logarithmic Amplitudes}{51}{subsection.A.3.2}%
+\contentsline {subsection}{\numberline {A.3.3}Spectral Moments}{51}{subsection.A.3.3}%
+\contentsline {section}{\numberline {A.4}Derivation of Computational Complexity}{51}{section.A.4}%
+\contentsline {subsection}{\numberline {A.4.1}Bispectrum Complexity}{51}{subsection.A.4.1}%
+\contentsline {subsection}{\numberline {A.4.2}Trispectrum Complexity}{51}{subsection.A.4.2}%
+\contentsline {section}{\numberline {A.5}Derivation of Rotor Response Equations}{51}{section.A.5}%
+\contentsline {subsection}{\numberline {A.5.1}Unbalance Response}{51}{subsection.A.5.1}%
+\contentsline {subsection}{\numberline {A.5.2}Critical Speed Analysis}{52}{subsection.A.5.2}%
+\contentsline {chapter}{\numberline {B}Code Implementation}{53}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Core Classes and Methods}{53}{section.B.1}%
+\contentsline {subsection}{\numberline {B.1.1}SpectralAnalyzer Class}{53}{subsection.B.1.1}%
+\contentsline {subsection}{\numberline {B.1.2}HOSAnalyzer Class}{55}{subsection.B.1.2}%
+\contentsline {subsection}{\numberline {B.1.3}FeatureExtractor Class}{58}{subsection.B.1.3}%
+\contentsline {section}{\numberline {B.2}Usage Examples}{63}{section.B.2}%
+\contentsline {subsection}{\numberline {B.2.1}Basic Analysis Example}{63}{subsection.B.2.1}%
+\contentsline {subsection}{\numberline {B.2.2}Batch Processing Example}{63}{subsection.B.2.2}%
+\contentsline {chapter}{\numberline {C}Additional Results}{65}{appendix.C}%
+\contentsline {section}{\numberline {C.1}Extended Performance Analysis}{65}{section.C.1}%
+\contentsline {subsection}{\numberline {C.1.1}Detailed Classification Results}{65}{subsection.C.1.1}%
+\contentsline {subsubsection}{Per-Class Performance Metrics}{65}{subsubsection*.58}%
+\contentsline {subsubsection}{Confusion Matrix Analysis}{65}{subsubsection*.60}%
+\contentsline {subsection}{\numberline {C.1.2}Feature Importance Analysis}{66}{subsection.C.1.2}%
+\contentsline {subsubsection}{Top 20 Most Important Features}{66}{subsubsection*.62}%
+\contentsline {section}{\numberline {C.2}Computational Performance Analysis}{67}{section.C.2}%
+\contentsline {subsection}{\numberline {C.2.1}Detailed Timing Results}{67}{subsection.C.2.1}%
+\contentsline {subsection}{\numberline {C.2.2}Memory Usage Analysis}{67}{subsection.C.2.2}%
+\contentsline {section}{\numberline {C.3}Statistical Analysis}{67}{section.C.3}%
+\contentsline {subsection}{\numberline {C.3.1}Feature Distribution Analysis}{67}{subsection.C.3.1}%
+\contentsline {subsection}{\numberline {C.3.2}Statistical Significance Tests}{68}{subsection.C.3.2}%
+\contentsline {section}{\numberline {C.4}Validation Studies}{68}{section.C.4}%
+\contentsline {subsection}{\numberline {C.4.1}Cross-Validation Results}{68}{subsection.C.4.1}%
+\contentsline {subsection}{\numberline {C.4.2}Learning Curve Analysis}{69}{subsection.C.4.2}%
+\contentsline {section}{\numberline {C.5}Additional Case Studies}{69}{section.C.5}%
+\contentsline {subsection}{\numberline {C.5.1}Case Study 3: Gear Fault Detection}{69}{subsection.C.5.1}%
+\contentsline {subsection}{\numberline {C.5.2}Case Study 4: Motor Fault Detection}{69}{subsection.C.5.2}%
+\contentsline {section}{\numberline {C.6}Error Analysis}{69}{section.C.6}%
+\contentsline {subsection}{\numberline {C.6.1}Misclassification Analysis}{69}{subsection.C.6.1}%
+\contentsline {subsection}{\numberline {C.6.2}Feature Sensitivity Analysis}{70}{subsection.C.6.2}%
+\contentsline {section}{\numberline {C.7}Summary}{70}{section.C.7}%
+\contentsline {chapter}{\numberline {D}Dataset Description}{71}{appendix.D}%
+\contentsline {section}{\numberline {D.1}Overview}{71}{section.D.1}%
+\contentsline {section}{\numberline {D.2}Simulated Datasets}{71}{section.D.2}%
+\contentsline {subsection}{\numberline {D.2.1}Signal Generation Parameters}{71}{subsection.D.2.1}%
+\contentsline {subsection}{\numberline {D.2.2}Fault Simulation Models}{71}{subsection.D.2.2}%
+\contentsline {subsubsection}{Normal Operation}{71}{subsubsection*.75}%
+\contentsline {subsubsection}{Rotor Unbalance}{72}{subsubsection*.76}%
+\contentsline {subsubsection}{Bearing Defect}{72}{subsubsection*.77}%
+\contentsline {subsubsection}{Misalignment}{72}{subsubsection*.78}%
+\contentsline {section}{\numberline {D.3}Real Datasets}{72}{section.D.3}%
+\contentsline {subsection}{\numberline {D.3.1}Case Western Reserve University Bearing Data}{72}{subsection.D.3.1}%
+\contentsline {subsubsection}{Dataset Description}{72}{subsubsection*.79}%
+\contentsline {subsubsection}{Data Preprocessing}{73}{subsubsection*.81}%
+\contentsline {subsection}{\numberline {D.3.2}NASA Prognostics Data Repository}{73}{subsection.D.3.2}%
+\contentsline {subsubsection}{Dataset Description}{73}{subsubsection*.82}%
+\contentsline {subsection}{\numberline {D.3.3}Industrial Dataset}{73}{subsection.D.3.3}%
+\contentsline {subsubsection}{Dataset Description}{73}{subsubsection*.84}%
+\contentsline {section}{\numberline {D.4}Data Augmentation}{74}{section.D.4}%
+\contentsline {subsection}{\numberline {D.4.1}Augmentation Techniques}{74}{subsection.D.4.1}%
+\contentsline {subsection}{\numberline {D.4.2}Augmentation Parameters}{74}{subsection.D.4.2}%
+\contentsline {section}{\numberline {D.5}Data Quality Assessment}{74}{section.D.5}%
+\contentsline {subsection}{\numberline {D.5.1}Quality Metrics}{74}{subsection.D.5.1}%
+\contentsline {subsection}{\numberline {D.5.2}Data Validation}{75}{subsection.D.5.2}%
+\contentsline {section}{\numberline {D.6}Data Splitting Strategy}{75}{section.D.6}%
+\contentsline {subsection}{\numberline {D.6.1}Training, Validation, and Test Sets}{75}{subsection.D.6.1}%
+\contentsline {subsection}{\numberline {D.6.2}Stratified Splitting}{75}{subsection.D.6.2}%
+\contentsline {section}{\numberline {D.7}Data Preprocessing Pipeline}{75}{section.D.7}%
+\contentsline {subsection}{\numberline {D.7.1}Preprocessing Steps}{75}{subsection.D.7.1}%
+\contentsline {subsection}{\numberline {D.7.2}Preprocessing Parameters}{76}{subsection.D.7.2}%
+\contentsline {section}{\numberline {D.8}Data Storage and Access}{76}{section.D.8}%
+\contentsline {subsection}{\numberline {D.8.1}File Organization}{76}{subsection.D.8.1}%
+\contentsline {subsection}{\numberline {D.8.2}Data Formats}{76}{subsection.D.8.2}%
+\contentsline {section}{\numberline {D.9}Summary}{77}{section.D.9}%

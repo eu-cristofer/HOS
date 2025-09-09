@@ -333,3 +333,4 @@ if __name__ == "__main__":
     freqs_psd, psd = analyzer.compute_psd(signals['multifreq'])
     analyzer.plot_spectrum(freqs_psd, psd, "Power Spectral Density", log_scale=True)
 
+

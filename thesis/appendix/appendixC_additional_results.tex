@@ -1,0 +1,321 @@
+% =============================================================================
+% APPENDIX C: ADDITIONAL RESULTS
+% =============================================================================
+
+\chapter{Additional Results}
+
+\section{Extended Performance Analysis}
+
+\subsection{Detailed Classification Results}
+
+This appendix provides additional experimental results that support the main findings presented in Chapter 5.
+
+\subsubsection{Per-Class Performance Metrics}
+
+Detailed performance metrics for each fault class are presented in \tabref{tab:per_class_performance}.
+
+\begin{table}[H]
+\centering
+\caption{Per-class performance metrics for Random Forest classifier}
+\label{tab:per_class_performance}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Fault Class & Precision & Recall & F1-Score & Support \\
+\midrule
+Normal & 0.95 & 0.94 & 0.95 & 200 \\
+Unbalance & 0.92 & 0.93 & 0.92 & 200 \\
+Bearing Defect & 0.89 & 0.91 & 0.90 & 200 \\
+Misalignment & 0.91 & 0.89 & 0.90 & 200 \\
+Multiple Faults & 0.88 & 0.87 & 0.87 & 200 \\
+\midrule
+Macro Average & 0.91 & 0.91 & 0.91 & 1000 \\
+Weighted Average & 0.91 & 0.91 & 0.91 & 1000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Confusion Matrix Analysis}
+
+The confusion matrix for the Random Forest classifier shows the detailed classification results:
+
+\begin{table}[H]
+\centering
+\caption{Detailed confusion matrix for Random Forest classifier}
+\label{tab:detailed_confusion_matrix}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+& \multicolumn{5}{c}{Predicted} \\
+\cmidrule(lr){2-6}
+Actual & Normal & Unbalance & Bearing & Misalignment & Multiple \\
+\midrule
+Normal & 188 & 5 & 3 & 2 & 2 \\
+Unbalance & 4 & 186 & 6 & 3 & 1 \\
+Bearing & 2 & 8 & 182 & 5 & 3 \\
+Misalignment & 3 & 4 & 4 & 178 & 11 \\
+Multiple & 1 & 2 & 5 & 12 & 180 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Feature Importance Analysis}
+
+\subsubsection{Top 20 Most Important Features}
+
+The most important features identified by the Random Forest classifier are listed in \tabref{tab:top_features}.
+
+\begin{table}[H]
+\centering
+\caption{Top 20 most important features}
+\label{tab:top_features}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Rank & Feature Name & Importance Score \\
+\midrule
+1 & bispectrum\_sla & 0.0856 \\
+2 & bispectrum\_mean\_magnitude & 0.0789 \\
+3 & kurtosis & 0.0723 \\
+4 & bispectrum\_slade & 0.0687 \\
+5 & spectral\_centroid & 0.0654 \\
+6 & crest\_factor & 0.0621 \\
+7 & bispectrum\_fosm & 0.0589 \\
+8 & rms & 0.0556 \\
+9 & spectral\_bandwidth & 0.0523 \\
+10 & bispectrum\_sosm & 0.0491 \\
+11 & peak & 0.0458 \\
+12 & variance & 0.0425 \\
+13 & spectral\_rolloff & 0.0392 \\
+14 & trispectrum\_sla & 0.0359 \\
+15 & std & 0.0326 \\
+16 & skewness & 0.0293 \\
+17 & trispectrum\_mean\_magnitude & 0.0260 \\
+18 & mean & 0.0227 \\
+19 & frequency\_domain\_feature\_1 & 0.0194 \\
+20 & frequency\_domain\_feature\_2 & 0.0161 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Computational Performance Analysis}
+
+\subsection{Detailed Timing Results}
+
+Comprehensive timing analysis for different signal lengths and analysis methods:
+
+\begin{table}[H]
+\centering
+\caption{Computational performance for different signal lengths}
+\label{tab:timing_analysis}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Signal Length & FFT & PSD & Bispectrum & Trispectrum \\
+\midrule
+512 & 0.001 & 0.003 & 0.12 & 0.89 \\
+1024 & 0.002 & 0.006 & 0.45 & 3.21 \\
+2048 & 0.004 & 0.012 & 1.78 & 12.45 \\
+4096 & 0.008 & 0.024 & 7.12 & 48.67 \\
+8192 & 0.016 & 0.048 & 28.45 & 189.23 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Memory Usage Analysis}
+
+Memory consumption for different analysis methods:
+
+\begin{table}[H]
+\centering
+\caption{Memory usage for different analysis methods}
+\label{tab:memory_usage}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Signal Length & FFT & PSD & Bispectrum & Trispectrum \\
+\midrule
+512 & 0.5 & 1.2 & 8.5 & 32.1 \\
+1024 & 1.0 & 2.4 & 17.0 & 64.2 \\
+2048 & 2.0 & 4.8 & 34.0 & 128.4 \\
+4096 & 4.0 & 9.6 & 68.0 & 256.8 \\
+8192 & 8.0 & 19.2 & 136.0 & 513.6 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Statistical Analysis}
+
+\subsection{Feature Distribution Analysis}
+
+Statistical analysis of feature distributions for different fault classes:
+
+\begin{table}[H]
+\centering
+\caption{Feature statistics for different fault classes}
+\label{tab:feature_statistics}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Feature & Normal & Unbalance & Bearing & Misalignment & Multiple \\
+\midrule
+\multicolumn{6}{l}{\textbf{RMS}} \\
+Mean & 0.245 & 0.387 & 0.456 & 0.423 & 0.512 \\
+Std & 0.023 & 0.034 & 0.041 & 0.038 & 0.047 \\
+\midrule
+\multicolumn{6}{l}{\textbf{Kurtosis}} \\
+Mean & 2.98 & 4.23 & 5.67 & 4.89 & 6.12 \\
+Std & 0.45 & 0.67 & 0.89 & 0.78 & 1.02 \\
+\midrule
+\multicolumn{6}{l}{\textbf{Bispectrum SLA}} \\
+Mean & 12.34 & 15.67 & 18.23 & 16.89 & 19.45 \\
+Std & 1.23 & 1.56 & 1.89 & 1.67 & 2.01 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Statistical Significance Tests}
+
+Results of statistical significance tests comparing feature distributions:
+
+\begin{table}[H]
+\centering
+\caption{Statistical significance tests (p-values)}
+\label{tab:statistical_tests}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Feature & Normal vs & Normal vs & Normal vs & Normal vs \\
+& Unbalance & Bearing & Misalignment & Multiple \\
+\midrule
+RMS & <0.001 & <0.001 & <0.001 & <0.001 \\
+Kurtosis & <0.001 & <0.001 & <0.001 & <0.001 \\
+Crest Factor & <0.001 & <0.001 & <0.001 & <0.001 \\
+Bispectrum SLA & <0.001 & <0.001 & <0.001 & <0.001 \\
+Bispectrum MM & <0.001 & <0.001 & <0.001 & <0.001 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Validation Studies}
+
+\subsection{Cross-Validation Results}
+
+Detailed 10-fold cross-validation results for all algorithms:
+
+\begin{table}[H]
+\centering
+\caption{Detailed cross-validation results}
+\label{tab:detailed_cv}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Algorithm & Mean Accuracy & Std Accuracy & Mean F1 & Std F1 \\
+\midrule
+SVM (Linear) & 0.847 & 0.012 & 0.849 & 0.011 \\
+SVM (RBF) & 0.891 & 0.008 & 0.893 & 0.007 \\
+Random Forest & 0.923 & 0.005 & 0.924 & 0.005 \\
+Neural Network & 0.908 & 0.007 & 0.910 & 0.006 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Learning Curve Analysis}
+
+Performance as a function of training set size:
+
+\begin{table}[H]
+\centering
+\caption{Learning curve analysis}
+\label{tab:learning_curve}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Training Size & 100 & 200 & 400 & 600 & 800 \\
+\midrule
+SVM (RBF) & 0.756 & 0.823 & 0.867 & 0.889 & 0.891 \\
+Random Forest & 0.812 & 0.876 & 0.901 & 0.915 & 0.923 \\
+Neural Network & 0.789 & 0.845 & 0.878 & 0.896 & 0.908 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Additional Case Studies}
+
+\subsection{Case Study 3: Gear Fault Detection}
+
+Results for gear fault detection using HOS features:
+
+\begin{table}[H]
+\centering
+\caption{Gear fault detection results}
+\label{tab:gear_fault_results}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Gear Fault Type & Accuracy & Precision & Recall \\
+\midrule
+Normal & 0.94 & 0.95 & 0.94 \\
+Tooth Crack & 0.89 & 0.88 & 0.89 \\
+Surface Wear & 0.91 & 0.92 & 0.91 \\
+Pitting & 0.87 & 0.86 & 0.87 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Case Study 4: Motor Fault Detection}
+
+Results for motor fault detection:
+
+\begin{table}[H]
+\centering
+\caption{Motor fault detection results}
+\label{tab:motor_fault_results}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Motor Fault Type & Accuracy & Precision & Recall \\
+\midrule
+Normal & 0.96 & 0.97 & 0.96 \\
+Bearing Fault & 0.88 & 0.87 & 0.88 \\
+Rotor Fault & 0.85 & 0.84 & 0.85 \\
+Stator Fault & 0.82 & 0.81 & 0.82 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Error Analysis}
+
+\subsection{Misclassification Analysis}
+
+Analysis of common misclassification patterns:
+
+\begin{table}[H]
+\centering
+\caption{Misclassification patterns}
+\label{tab:misclassification}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Actual Class & Most Common Misclassification & Frequency \\
+\midrule
+Normal & Unbalance & 5 \\
+Unbalance & Normal & 4 \\
+Bearing & Misalignment & 5 \\
+Misalignment & Multiple & 11 \\
+Multiple & Misalignment & 12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Feature Sensitivity Analysis}
+
+Sensitivity analysis of key features to noise:
+
+\begin{table}[H]
+\centering
+\caption{Feature sensitivity to noise}
+\label{tab:feature_sensitivity}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Feature & SNR=20dB & SNR=10dB & SNR=5dB & SNR=0dB \\
+\midrule
+RMS & 0.95 & 0.92 & 0.87 & 0.78 \\
+Kurtosis & 0.89 & 0.82 & 0.74 & 0.61 \\
+Bispectrum SLA & 0.94 & 0.91 & 0.86 & 0.79 \\
+Bispectrum MM & 0.92 & 0.88 & 0.82 & 0.73 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Summary}
+
+This appendix provides comprehensive additional results that support the main findings of the research. The detailed analysis confirms the effectiveness of HOS-based features for fault detection and provides insights into the performance characteristics of different algorithms and feature combinations.

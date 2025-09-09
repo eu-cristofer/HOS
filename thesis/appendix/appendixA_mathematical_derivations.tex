@@ -1,0 +1,155 @@
+% =============================================================================
+% APPENDIX A: MATHEMATICAL DERIVATIONS
+% =============================================================================
+
+\chapter{Mathematical Derivations}
+
+\section{Derivation of Bispectrum Properties}
+
+\subsection{Symmetry Properties}
+
+The bispectrum $B_x(\omega_1, \omega_2)$ satisfies several symmetry properties that can be derived from the definition:
+
+\begin{equation}
+B_x(\omega_1, \omega_2) = \sum_{\tau_1=-\infty}^{\infty} \sum_{\tau_2=-\infty}^{\infty} C_{3,x}(\tau_1, \tau_2) e^{-j(\omega_1\tau_1 + \omega_2\tau_2)}
+\end{equation}
+
+\subsubsection{Conjugate Symmetry}
+
+Starting from the definition of the third-order cumulant:
+\begin{equation}
+C_{3,x}(\tau_1, \tau_2) = E[x(t)x(t+\tau_1)x(t+\tau_2)]
+\end{equation}
+
+Taking the complex conjugate:
+\begin{align}
+C_{3,x}^*(\tau_1, \tau_2) &= E[x^*(t)x^*(t+\tau_1)x^*(t+\tau_2)] \\
+&= E[x(t)x(t+\tau_1)x(t+\tau_2)] \quad \text{(for real signals)} \\
+&= C_{3,x}(\tau_1, \tau_2)
+\end{align}
+
+Therefore:
+\begin{align}
+B_x^*(\omega_1, \omega_2) &= \sum_{\tau_1=-\infty}^{\infty} \sum_{\tau_2=-\infty}^{\infty} C_{3,x}^*(\tau_1, \tau_2) e^{j(\omega_1\tau_1 + \omega_2\tau_2)} \\
+&= \sum_{\tau_1=-\infty}^{\infty} \sum_{\tau_2=-\infty}^{\infty} C_{3,x}(\tau_1, \tau_2) e^{j(\omega_1\tau_1 + \omega_2\tau_2)} \\
+&= B_x(-\omega_1, -\omega_2)
+\end{align}
+
+\subsubsection{Interchange Symmetry}
+
+From the symmetry of the cumulant:
+\begin{equation}
+C_{3,x}(\tau_1, \tau_2) = C_{3,x}(\tau_2, \tau_1)
+\end{equation}
+
+Therefore:
+\begin{align}
+B_x(\omega_1, \omega_2) &= \sum_{\tau_1=-\infty}^{\infty} \sum_{\tau_2=-\infty}^{\infty} C_{3,x}(\tau_1, \tau_2) e^{-j(\omega_1\tau_1 + \omega_2\tau_2)} \\
+&= \sum_{\tau_1=-\infty}^{\infty} \sum_{\tau_2=-\infty}^{\infty} C_{3,x}(\tau_2, \tau_1) e^{-j(\omega_1\tau_1 + \omega_2\tau_2)} \\
+&= \sum_{\tau_1=-\infty}^{\infty} \sum_{\tau_2=-\infty}^{\infty} C_{3,x}(\tau_1, \tau_2) e^{-j(\omega_2\tau_1 + \omega_1\tau_2)} \\
+&= B_x(\omega_2, \omega_1)
+\end{align}
+
+\section{Derivation of HOS Estimation Variance}
+
+\subsection{Variance of Bispectrum Estimate}
+
+The variance of the bispectrum estimate using the direct method can be derived as follows.
+
+For a signal $x[n]$ with $N$ samples, the bispectrum estimate is:
+\begin{equation}
+\hat{B}_x(\omega_1, \omega_2) = \frac{1}{N} \sum_{n=0}^{N-1} X(n)X(n+\omega_1)X^*(n+\omega_1+\omega_2)
+\end{equation}
+
+The variance is:
+\begin{align}
+\text{Var}[\hat{B}_x(\omega_1, \omega_2)] &= E[|\hat{B}_x(\omega_1, \omega_2)|^2] - |E[\hat{B}_x(\omega_1, \omega_2)]|^2
+\end{align}
+
+For Gaussian noise, the variance can be approximated as:
+\begin{equation}
+\text{Var}[\hat{B}_x(\omega_1, \omega_2)] \approx \frac{1}{N} P_x(\omega_1) P_x(\omega_2) P_x(\omega_1 + \omega_2)
+\end{equation}
+
+where $P_x(\omega)$ is the power spectral density.
+
+\section{Derivation of Feature Extraction Formulas}
+
+\subsection{Mean Magnitude of Bispectrum}
+
+The mean magnitude of the bispectrum is defined as:
+\begin{equation}
+\text{MM} = \frac{1}{N^2} \sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} |B_x(\omega_1, \omega_2)|
+\end{equation}
+
+This can be derived from the definition of the bispectrum by taking the magnitude and averaging over all frequency pairs.
+
+\subsection{Sum of Logarithmic Amplitudes}
+
+The sum of logarithmic amplitudes is:
+\begin{equation}
+\text{SLA} = \sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} \log(|B_x(\omega_1, \omega_2)| + \epsilon)
+\end{equation}
+
+The small constant $\epsilon$ is added to avoid taking the logarithm of zero. This feature provides a measure of the overall "activity" in the bispectrum.
+
+\subsection{Spectral Moments}
+
+The first-order spectral moment is:
+\begin{equation}
+\text{FOSM} = \frac{\sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} \omega_1 |B_x(\omega_1, \omega_2)|}{\sum_{\omega_1=0}^{N-1} \sum_{\omega_2=0}^{N-1} |B_x(\omega_1, \omega_2)|}
+\end{equation}
+
+This represents the "center of mass" of the bispectrum in the $\omega_1$ direction.
+
+\section{Derivation of Computational Complexity}
+
+\subsection{Bispectrum Complexity}
+
+The direct computation of the bispectrum requires:
+\begin{itemize}
+    \item Computing DFT: $O(N \log N)$
+    \item Computing bispectrum: $O(N^2)$ for each frequency pair
+    \item Total: $O(N^3)$
+\end{itemize}
+
+\subsection{Trispectrum Complexity}
+
+Similarly, the trispectrum requires:
+\begin{itemize}
+    \item Computing DFT: $O(N \log N)$
+    \item Computing trispectrum: $O(N^3)$ for each frequency triplet
+    \item Total: $O(N^4)$
+\end{itemize}
+
+\section{Derivation of Rotor Response Equations}
+
+\subsection{Unbalance Response}
+
+For a rotor with unbalance, the equation of motion is:
+\begin{equation}
+M\ddot{q} + C\dot{q} + Kq = F_{unbalance}(t)
+\end{equation}
+
+The unbalance force is:
+\begin{equation}
+F_{unbalance}(t) = m \epsilon \omega^2 e^{j\omega t}
+\end{equation}
+
+where $m$ is the mass, $\epsilon$ is the eccentricity, and $\omega$ is the rotational frequency.
+
+The steady-state response is:
+\begin{equation}
+q(t) = H(\omega) F_{unbalance}(\omega)
+\end{equation}
+
+where $H(\omega) = (K - \omega^2 M + j\omega C)^{-1}$ is the frequency response function.
+
+\subsection{Critical Speed Analysis}
+
+Critical speeds occur when the denominator of the frequency response function approaches zero:
+\begin{equation}
+\det(K - \omega^2 M + j\omega C) = 0
+\end{equation}
+
+This gives the natural frequencies of the system, which correspond to the critical speeds.
